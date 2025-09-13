@@ -1,0 +1,24 @@
+[13/09/2025, 21:09:19] Isabella Zhang: Image 1: Yearly Abundance of Aphid Species (1990–2020) – Grouped Bar Chart
+Description:
+This grouped bar chart shows the annual counts of three major aphid species (Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae) from 1990 to 2020.
+Each year on the X-axis features three colored bars (blue, green, purple), each representing one species.
+Y-axis: Total count of aphids.
+This plot makes compare relative abundance between species and between years, revealing both outbreak years and longer-term declines or changes in species dominance over time.
+[13/09/2025, 21:09:36] Isabella Zhang: Image 2: Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
+Description:
+This panel of two heatmaps compares the correlations between cereal yields (grain and straw) and aphid species counts for two time periods: 1990–2000 and 2010–2020.
+Rows: Grain and straw yield
+Columns: Each aphid species
+Cell values: Pearson correlation coefficient (range -1 to 1; color-coded, blue = negative, red = positive)
+Left panel (1990–2000): Shows mostly positive but weak correlations between grain/straw and insects, with the strongest between S. avenae and grain (0.38).
+Right panel (2010–2020): Shows weaker or negative correlations, especially for S. avenae and M. dirhodum, suggesting a possible shift in aphid-yield relationships over decades.
+[13/09/2025, 21:09:46] Isabella Zhang: Image 3: Boxplots of Grain Yield, Straw Yield, Rainfall, and Temperature (1990–2000 vs 2010–2020)
+Description:
+This 2×2 panel of boxplots compares key agronomic and climate variables for two periods (1990–2000 and 2010–2020).
+Top row: Grain yield (left) and straw yield (right)
+Bottom row: Total summer rainfall (left) and mean summer temperature (right)
+Each plot: Shows distribution, median, and range for each period.
+Notable trends:
+Grain yield increased in the later period, while straw yield is similar or slightly lower.
+Total summer rainfall is variable in both periods.
+Mean summer temperature is higher in 2010–2020, indicating a warming trend.
