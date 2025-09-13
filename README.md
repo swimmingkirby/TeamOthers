@@ -5,3 +5,5 @@ This project is part of the [Rothamsted Data Hackathon](https://github.com/Rotha
 Across these two time spans, we explore correlations between grain and straw yield, fertiliser use (nitrogen, phosphorus, potassium), estimated CO₂ emissions (based on nitrogen application), meteorological data (rainfall and temperature), and insect prevalence data from the [Rothamsted Insect Survey](https://insectsurvey.com/). 🪰
 
 You can view the web resource developed in this project here: [Webpage Link](#)  
+
+This platform has been developed with the aim of being **accessible to those who would most benefit from the data**. Plots are designed to be modular and interactive.
