@@ -1,7 +1,15 @@
 Figure 1: These plots show the trends in winter wheat yield for grain and straw across two time periods: 1990–2000 and 2010–2020. In the 1990–2000 period, grain yields start relatively high but decline toward the end of the decade, while straw yields show greater year-to-year variability and a general downward trend. In contrast, the 2010–2020 period shows grain yields that are more stable overall, with smaller fluctuations, whereas straw yields continue to decline more consistently over time. Together, the figures suggest that while grain yield has been maintained at a relatively steady level in the more recent decade, straw yield has decreased, pointing to possible changes in crop management, fertiliser use, or environmental conditions affecting biomass allocation.
 
 
-Figure 2: Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
+Figure 2: Correlation of Yield and Aphid Abundance by Period (1990–2000 vs 2010–2020) – Heatmap Comparison
+Description:
+These paired heatmaps display the correlation coefficients between grain yield, straw yield, and the yearly total abundance of three major aphid species (Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae) for Strip 8, separated into two time periods (1990–2000 and 2010–2020).
+Each colored square shows the strength and direction of the linear relationship (Pearson’s correlation) between pairs of variables, with positive correlations shown in red and negative in blue.
+Left panel: Correlations calculated using data from 1990 to 2000.
+Right panel: Correlations calculated using data from 2010 to 2020.
+This side-by-side comparison reveals how the interactions between crop yields and aphid populations have changed over time, highlighting shifts in ecological dynamics and potential changes in the factors influencing both yields and pest populations. The strongest correlations can be spotted by the darkest shades, and changing correlation patterns between periods may suggest longer-term shifts in crop–aphid relationships.
+
+ Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
 Description:
 This panel of two heatmaps compares the correlations between cereal yields (grain and straw) and aphid species counts for two time periods: 1990–2000 and 2010–2020.
 Rows: Grain and straw yield
@@ -10,18 +18,16 @@ Cell values: Pearson correlation coefficient (range -1 to 1; color-coded, blue =
 Left panel (1990–2000): Shows mostly positive but weak correlations between grain/straw and insects, with the strongest between S. avenae and grain (0.38).
 Right panel (2010–2020): Shows weaker or negative correlations, especially for S. avenae and M. dirhodum, suggesting a possible shift in aphid-yield relationships over decades.
 
+
 Figure 4:
 
-Figure 5: Boxplots of Grain Yield, Straw Yield, Rainfall, and Temperature (1990–2000 vs 2010–2020)
+Figure 5: Changes in Yield and Summer Weather (1990–2000 vs 2010–2020) – Strip 8 Only
 Description:
-This 2×2 panel of boxplots compares key agronomic and climate variables for two periods (1990–2000 and 2010–2020).
-Top row: Grain yield (left) and straw yield (right)
-Bottom row: Total summer rainfall (left) and mean summer temperature (right)
-Each plot: Shows distribution, median, and range for each period.
-Notable trends:
-Grain yield increased in the later period, while straw yield is similar or slightly lower.
-Total summer rainfall is variable in both periods.
-Mean summer temperature is higher in 2010–2020, indicating a warming trend.
+This set of four boxplots compares the distributions of grain yield, straw yield, total summer rainfall, and mean summer temperature for Strip 8 between two time periods: 1990–2000 (gold) and 2010–2020 (blue).
+Each panel shows the spread and central tendency of yearly values for one variable, with the X-axis indicating the period and the Y-axis showing the measured value (yield in tons per hectare, rainfall in mm, temperature in °C).
+Left two plots: Grain and straw yields.
+Right two plots: Summer rainfall and temperature, calculated for the same growing years.
+This visualization reveals clear differences between the two decades, making it easy to compare both yields and key climate factors. Notable patterns—such as reduced yield, changing rainfall distribution, or higher summer temperatures—can be quickly seen and interpreted in the context of agricultural and environmental changes over time.
 
 Figure 6: Yearly Abundance of Aphid Species (1990–2020) – Grouped Bar Chart
 Description:
