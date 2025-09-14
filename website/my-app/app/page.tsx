@@ -1,13 +1,10 @@
 'use client';
 
-import figData from "../../plotly-json/two-decade-analysis.json";
-import fertiliserData from '../../plotly-json/fertiliser-usage.json';
-import fertiliserComparisonData from '../../plotly-json/fertiliser-usage-comparison.json';
-import weatherData from '../../plotly-json/weather-patterns.json';
-import insectData from '../../plotly-json/insect-populations.json';
-import asiaRiceData from '../../plotly-json/asia-rice.json';
-import africaMaizeData from '../../plotly-json/africa-maize.json';
-import synthesisData from '../../plotly-json/synthesis.json';
+import summaryData1990 from "../../plotly-json/1_SummaryPlot_1990.json";
+import summaryData2010 from "../../plotly-json/1_SummaryPlot_2010.json";
+import fertiliserData90s from '../../plotly-json/4_FertiliserUse_90s.json';
+import fertiliserData10s from '../../plotly-json/4_FertiliserUse_10s.json';
+import orderNumberData from '../../plotly-json/order-number.json';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
@@ -85,9 +82,9 @@ export default function Home() {
               <div className="viz-container-primary" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
                   <Plot 
-                    data={figData.data as any} 
+                    data={summaryData1990.data as any} 
                     layout={{
-                      ...figData.layout,
+                      ...summaryData1990.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
                       paper_bgcolor: 'rgba(0,0,0,0)',
                       plot_bgcolor: 'rgba(0,0,0,0)',
@@ -231,9 +228,9 @@ export default function Home() {
                   <div className="viz-container-secondary" style={{ height: '500px' }}>
                     <div className="viz-inner-wrapper" style={{ height: '500px' }}>
                       <Plot 
-                        data={fertiliserData.data as any} 
+                        data={fertiliserData90s.data as any} 
                         layout={{
-                          ...fertiliserData.layout,
+                          ...fertiliserData90s.layout,
                           margin: { t: 80, r: 40, b: 80, l: 80 },
                           paper_bgcolor: 'rgba(0,0,0,0)',
                           plot_bgcolor: 'rgba(0,0,0,0)',
@@ -286,9 +283,9 @@ export default function Home() {
                   <div className="viz-container-primary" style={{ height: '500px' }}>
                     <div className="viz-inner-wrapper" style={{ height: '500px' }}>
                       <Plot 
-                        data={weatherData.data as any} 
+                        data={summaryData2010.data as any} 
                         layout={{
-                          ...weatherData.layout,
+                          ...summaryData2010.layout,
                           margin: { t: 80, r: 40, b: 80, l: 80 },
                           paper_bgcolor: 'rgba(0,0,0,0)',
                           plot_bgcolor: 'rgba(0,0,0,0)',
@@ -330,9 +327,9 @@ export default function Home() {
                   <div className="viz-container-secondary" style={{ height: '500px' }}>
                     <div className="viz-inner-wrapper" style={{ height: '500px' }}>
                       <Plot 
-                        data={insectData.data as any} 
+                        data={fertiliserData10s.data as any} 
                         layout={{
-                          ...insectData.layout,
+                          ...fertiliserData10s.layout,
                           margin: { t: 80, r: 40, b: 80, l: 80 },
                           paper_bgcolor: 'rgba(0,0,0,0)',
                           plot_bgcolor: 'rgba(0,0,0,0)',
@@ -397,9 +394,9 @@ export default function Home() {
               <div className="viz-container-accent" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
                   <Plot 
-                    data={fertiliserComparisonData.data as any} 
+                    data={summaryData2010.data as any} 
                     layout={{
-                      ...fertiliserComparisonData.layout,
+                      ...summaryData2010.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
                       paper_bgcolor: 'rgba(0,0,0,0)',
                       plot_bgcolor: 'rgba(0,0,0,0)',
@@ -521,9 +518,9 @@ export default function Home() {
               <div className="viz-container-primary" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
                   <Plot 
-                    data={asiaRiceData.data as any} 
+                    data={summaryData1990.data as any} 
                     layout={{
-                      ...asiaRiceData.layout,
+                      ...summaryData1990.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
                       paper_bgcolor: 'rgba(0,0,0,0)',
                       plot_bgcolor: 'rgba(0,0,0,0)',
@@ -584,9 +581,9 @@ export default function Home() {
               <div className="viz-container-secondary" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
                   <Plot 
-                    data={africaMaizeData.data as any} 
+                    data={summaryData2010.data as any} 
                     layout={{
-                      ...africaMaizeData.layout,
+                      ...summaryData2010.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
                       paper_bgcolor: 'rgba(0,0,0,0)',
                       plot_bgcolor: 'rgba(0,0,0,0)',
@@ -703,9 +700,9 @@ export default function Home() {
               <div className="viz-container-accent" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
                   <Plot 
-                    data={synthesisData.data as any} 
+                    data={fertiliserData90s.data as any} 
                     layout={{
-                      ...synthesisData.layout,
+                      ...fertiliserData90s.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
                       paper_bgcolor: 'rgba(0,0,0,0)',
                       plot_bgcolor: 'rgba(0,0,0,0)',
