@@ -1,0 +1,34 @@
+Figure 1: Grain and Straw Yield of Winter Wheat and Impact of Fertiliser, Weather, and Insect presence (1990–2000 vs 2010–2020)
+These figures show yearly trends of all variables included in the Broadbalk winter wheat dataset for two time periods (1990–2000 and 2010–2020). The variables plotted are grain and straw yields, fertiliser applications (N, P, K), estimated CO₂ emissions from nitrogen inputs, meteorological data (rainfall and temperature), and insect counts for Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae. Units for grain and straw yierld are t/ha at 85% dry matter, kg/ha for fertiliser application, and a mean in ˚C for temp, a total sum of rainfall, and kg/CO2 for GHG emission.
+
+Figure 2: Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
+Description:
+This panel of two heatmaps compares the correlations between cereal yields (grain and straw) and aphid species counts for two time periods: 1990–2000 and 2010–2020.
+Rows: Grain and straw yield
+Columns: Each aphid species
+Cell values: Pearson correlation coefficient (range -1 to 1; color-coded, blue = negative, red = positive)
+Left panel (1990–2000): Shows mostly positive but weak correlations between grain/straw and insects, with the strongest between S. avenae and grain (0.38).
+Right panel (2010–2020): Shows weaker or negative correlations, especially for S. avenae and M. dirhodum, suggesting a possible shift in aphid-yield relationships over decades.
+
+Figure 4: Fertiliser use (1990–2000 vs 2010–2020)
+These charts compare the relative proportions of fertiliser use in winter wheat experiments across two periods: 1990–2000 and 2010–2020. In the earlier decade, nitrogen accounted for just over half of total fertiliser inputs (53.5%), with potassium contributing around a third (33.5%) and phosphorus making up 13%. By contrast, in the 2010–2020 period, nitrogen use increased to 61.5% and potassium rose slightly to 38.5%, while phosphorus inputs dropped to 0%. It is important to note that the absence of phosphorus application in the more recent decade does not imply a depletion of soil phosphorus. Instead, this shift reflects management practices: when soil phosphorus levels are already sufficient, additional phosphorus fertiliser is unnecessary. The trend highlights both the central role of nitrogen in driving yields and the way fertiliser strategies adapt to soil nutrient availability over time.
+
+Figure 5: Boxplots of Grain Yield, Straw Yield, Rainfall, and Temperature (1990–2000 vs 2010–2020)
+Description:
+This 2×2 panel of boxplots compares key agronomic and climate variables for two periods (1990–2000 and 2010–2020).
+Top row: Grain yield (left) and straw yield (right)
+Bottom row: Total summer rainfall (left) and mean summer temperature (right)
+Each plot: Shows distribution, median, and range for each period.
+Notable trends:
+Grain yield increased in the later period, while straw yield is similar or slightly lower.
+Total summer rainfall is variable in both periods.
+Mean summer temperature is higher in 2010–2020, indicating a warming trend.
+
+Figure 6: Yearly Abundance of Aphid Species (1990–2020) – Grouped Bar Chart
+Description:
+This grouped bar chart shows the annual counts of three major aphid species (Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae) from 1990 to 2020.
+Each year on the X-axis features three colored bars (blue, green, purple), each representing one species.
+Y-axis: Total count of aphids.
+This plot makes compare relative abundance between species and between years, revealing both outbreak years and longer-term declines or changes in species dominance over time.
+
+
