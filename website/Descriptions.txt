@@ -1,5 +1,6 @@
 Figure 1: Grain and Straw Yield of Winter Wheat and Impact of Fertiliser, Weather, and Insect presence (1990–2000 vs 2010–2020)
-These figures show yearly trends of all variables included in the Broadbalk winter wheat dataset for two time periods (1990–2000 and 2010–2020). The variables plotted are grain and straw yields, fertiliser applications (N, P, K), estimated CO₂ emissions from nitrogen inputs, meteorological data (rainfall and temperature), and insect counts for Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae.
+These figures show yearly trends of all variables included in the Broadbalk winter wheat dataset for two time periods (1990–2000 and 2010–2020). The variables plotted are grain and straw yields, fertiliser applications (N, P, K), estimated CO₂ emissions from nitrogen inputs, meteorological data (rainfall and temperature), and insect counts for Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae. Units for grain and straw yierld are t/ha at 85% dry matter, kg/ha for fertiliser application, and a mean in ˚C for temp, a total sum of rainfall, and kg/CO2 for GHG emission.
+
 Figure 2: Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
 Description:
 This panel of two heatmaps compares the correlations between cereal yields (grain and straw) and aphid species counts for two time periods: 1990–2000 and 2010–2020.
