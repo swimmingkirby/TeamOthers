@@ -1,6 +1,5 @@
-Figure 1: Grain and Straw Yield of Winter Wheat (1990–2000 vs 2010–2020)
-These plots show the trends in winter wheat yield for grain and straw across two time periods: 1990–2000 and 2010–2020. In the 1990–2000 period, grain yields start relatively high but decline toward the end of the decade, while straw yields show greater year-to-year variability and a general downward trend. In contrast, the 2010–2020 period shows grain yields that are more stable overall, with smaller fluctuations, whereas straw yields continue to decline more consistently over time. Together, the figures suggest that while grain yield has been maintained at a relatively steady level in the more recent decade, straw yield has decreased, pointing to possible changes in crop management, fertiliser use, or environmental conditions affecting biomass allocation.
-
+Figure 1: Grain and Straw Yield of Winter Wheat and Impact of Fertiliser, Weather, and Insect presence (1990–2000 vs 2010–2020)
+These figures show yearly trends of all variables included in the Broadbalk winter wheat dataset for two time periods (1990–2000 and 2010–2020). The variables plotted are grain and straw yields, fertiliser applications (N, P, K), estimated CO₂ emissions from nitrogen inputs, meteorological data (rainfall and temperature), and insect counts for Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae.
 Figure 2: Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
 Description:
 This panel of two heatmaps compares the correlations between cereal yields (grain and straw) and aphid species counts for two time periods: 1990–2000 and 2010–2020.
