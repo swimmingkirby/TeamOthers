@@ -1,0 +1,46 @@
+# Website Build Task List
+
+- [ ] **Set up Vite + React project**
+  - Initialize a new Vite project with React template in the website directory.
+- [ ] **Install core libraries**
+  - Install shadcn (with tweakcn theme), react-plotly.js, Plotly.js, Framer Motion, Lucide React.
+- [ ] **Set up shadcn with tweakcn theme**
+  - Run the shadcn add command to apply the tweakcn theme as described in the PRD.
+- [ ] **Create folder for Plotly JSON mock data**
+  - Create website/plotly-json/ and add mock JSON files for initial development.
+- [ ] **Implement navigation bar**
+  - Create a fixed top navigation bar with site title and section links as per PRD.
+- [ ] **Build hero section**
+  - Add large title, subtitle, explainer, and CTA for scrolling.
+- [ ] **Add Two-Decade Analysis section**
+  - Section with title, text, and placeholder for Plotly chart using mock JSON.
+- [ ] **Add Team section**
+  - Grid of member cards (photo, name, role) and mission statement.
+- [ ] **Add UK Winter Barley section**
+  - Intro text and multiple Plotly visualizations (mock data) for fertiliser, yield, weather, insects, and comparisons.
+- [ ] **Add Fertiliser Usage section**
+  - Visualization comparing average fertiliser inputs and nutrient uptake (mock data).
+- [ ] **Add Weather section**
+  - Visualization for rainfall & temperature patterns and anomalies (mock data).
+- [ ] **Add Insect Populations section**
+  - Visualization for insect counts and pressure changes (mock data).
+- [ ] **Add Relationships section**
+  - Visualizations showing relationships between datasets and dashboard-style comparison (mock data).
+- [ ] **Add Decade Comparison Tool**
+  - Interactive element for selecting decades and comparing averages (mock data).
+- [ ] **Add Asia (Rice) section**
+  - Text summary and at least one visualization for Asia case study (mock data).
+- [ ] **Add Africa (Maize) section**
+  - Text summary and at least one visualization for Africa case study (mock data).
+- [ ] **Add Global Implications section**
+  - Text with highlights and muted highlight boxes for key insights.
+- [ ] **Add Future Pathways section**
+  - Four flat-style cards for future scenarios.
+- [ ] **Add Synthesis section**
+  - Summary of key findings and one visualization comparing averages (mock data).
+- [ ] **Add References section and footer**
+  - Collapsible reference list and footer with data source and team credit.
+- [ ] **Implement scroll-driven animations**
+  - Use Framer Motion to animate sections and visualizations as user scrolls.
+- [ ] **Apply colour scheme and ensure accessibility**
+  - Apply PRD colour palette and ensure all components are accessible and responsive.

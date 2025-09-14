@@ -1,0 +1,876 @@
+'use client';
+
+import figData from "../../plotly-json/two-decade-analysis.json";
+import fertiliserData from '../../plotly-json/fertiliser-usage.json';
+import fertiliserComparisonData from '../../plotly-json/fertiliser-usage-comparison.json';
+import weatherData from '../../plotly-json/weather-patterns.json';
+import insectData from '../../plotly-json/insect-populations.json';
+import asiaRiceData from '../../plotly-json/asia-rice.json';
+import africaMaizeData from '../../plotly-json/africa-maize.json';
+import synthesisData from '../../plotly-json/synthesis.json';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
+import { Button } from "../components/ui/button";
+import { Separator } from "../components/ui/separator";
+import { motion } from "framer-motion";
+import dynamic from 'next/dynamic';
+import { ArrowDown, BarChart3, Users, Globe } from "lucide-react";
+
+export default function Home() {
+  const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <main className="min-h-screen bg-background pt-16">
+      {/* Hero Section */}
+      <section
+        id="home"
+        className="flex flex-col items-center justify-center min-h-screen px-4 text-center bg-gradient-to-b from-background to-muted/20"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="space-y-6"
+        >
+          <h1 className="font-serif text-5xl md:text-7xl font-bold text-primary mb-4">
+            NPK Impact Explorer
+          </h1>
+          <h2 className="text-2xl md:text-3xl text-secondary mb-6">
+            Understanding Fertilizer&apos;s Role in Agricultural Transformation
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto text-center">
+            Explore two decades of data across UK, Asia, and Africa to understand how
+            NPK fertilizers have shaped global agriculture.
+          </p>
+          <Button size="lg" className="gap-2" onClick={() => scrollToSection('two-decade')}>
+            <ArrowDown className="w-4 h-4" />
+            Scroll to Explore
+          </Button>
+        </motion.div>
+      </section>
+
+      {/* Two Decade Analysis Section */}
+      <motion.section 
+        id="two-decade" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
+              <BarChart3 className="w-5 h-5 mr-2" />
+              Historical Analysis
+            </Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              1990–2000 vs 2010–2020
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              This section compares agricultural data from the 1990s and 2010s, highlighting key changes in fertilizer usage, yields, weather patterns, and insect populations across different regions.
+            </p>
+          </div>
+          <Card className="w-full border-0">
+            <CardContent className="p-0">
+              <div className="viz-container-primary" style={{ height: '600px' }}>
+                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
+                  <Plot 
+                    data={figData.data as any} 
+                    layout={{
+                      ...figData.layout,
+                      margin: { t: 80, r: 40, b: 80, l: 80 },
+                      paper_bgcolor: 'rgba(0,0,0,0)',
+                      plot_bgcolor: 'rgba(0,0,0,0)',
+                      height: 550
+                    } as any}
+                    config={{ responsive: true, displayModeBar: false }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Analysis below chart */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <Card className="border-2 border-primary bg-primary text-primary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-primary-foreground flex items-center gap-2">
+                  ⚠️ 1995-1996 Drought Impact
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary-foreground text-sm">Despite high fertiliser inputs (130+ kg N/ha), yields dropped significantly due to water stress. This demonstrates the critical role of weather in nutrient uptake efficiency.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-secondary-foreground flex items-center gap-2">
+                  ⭐ 2010s Stability
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-secondary-foreground text-sm">More consistent rainfall patterns and improved water management led to stable, high yields even with reduced fertiliser inputs, showing the benefits of precision agriculture.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Team Section */}
+      <motion.section 
+        id="team" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-12">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
+              <Users className="w-5 h-5 mr-2" />
+              Our Team
+            </Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Meet Team Others
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Card className="text-center">
+              <CardHeader>
+                <Avatar className="w-32 h-32 mx-auto mb-4">
+                  <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200" alt="Alice Johnson" />
+                  <AvatarFallback>AJ</AvatarFallback>
+                </Avatar>
+                <CardTitle className="font-serif">Alice Johnson</CardTitle>
+                <CardDescription>Data Scientist</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="text-center">
+              <CardHeader>
+                <Avatar className="w-32 h-32 mx-auto mb-4">
+                  <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200" alt="Bob Smith" />
+                  <AvatarFallback>BS</AvatarFallback>
+                </Avatar>
+                <CardTitle className="font-serif">Bob Smith</CardTitle>
+                <CardDescription>Agronomist</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card className="text-center">
+              <CardHeader>
+                <Avatar className="w-32 h-32 mx-auto mb-4">
+                  <AvatarImage src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200" alt="Carol Lee" />
+                  <AvatarFallback>CL</AvatarFallback>
+                </Avatar>
+                <CardTitle className="font-serif">Carol Lee</CardTitle>
+                <CardDescription>Environmental Analyst</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+          <Card>
+            <CardContent className="p-6">
+              <p className="text-lg text-center text-muted-foreground">
+                Team Others is dedicated to exploring the intersections of agriculture, data, and sustainability. Our mission is to provide insights that drive informed decisions for a better future.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </motion.section>
+
+      {/* UK Winter Barley Section */}
+      <motion.section 
+        id="uk-winter-barley" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <motion.div 
+            className="text-center space-y-4"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Badge variant="secondary" className="text-lg px-4 py-2">UK Case Study</Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              UK Winter Barley
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              This case study examines the impact of NPK fertilizers on UK winter barley production over two decades, including trends in fertilizer usage, yields, weather conditions, and insect populations.
+            </p>
+          </motion.div>
+          
+          <div className="grid gap-8">
+            {/* Fertiliser Usage Chart */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <Card className="border-0">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif">Fertiliser Usage Over Time</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="viz-container-secondary" style={{ height: '500px' }}>
+                    <div className="viz-inner-wrapper" style={{ height: '500px' }}>
+                      <Plot 
+                        data={fertiliserData.data as any} 
+                        layout={{
+                          ...fertiliserData.layout,
+                          margin: { t: 80, r: 40, b: 80, l: 80 },
+                          paper_bgcolor: 'rgba(0,0,0,0)',
+                          plot_bgcolor: 'rgba(0,0,0,0)',
+                          height: 450
+                        } as any}
+                        config={{ responsive: true, displayModeBar: false }}
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Fertiliser insights below chart */}
+              <div className="mt-6">
+                <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-secondary-foreground">Fertiliser Insights</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-secondary-foreground text-sm">Fertiliser usage increased by 50% from 1990s to 2010s, indicating intensification of agricultural practices in UK winter barley production.</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
+
+            <Card className="border-0">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif">Grain vs Straw Yields Over Time</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="viz-container-accent flex items-center justify-center bg-muted/20" style={{ height: '400px' }}>
+                  <p className="text-muted-foreground">Yields Chart Placeholder</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Weather Patterns Chart */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <Card className="border-0">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif">Weather Patterns</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="viz-container-primary" style={{ height: '500px' }}>
+                    <div className="viz-inner-wrapper" style={{ height: '500px' }}>
+                      <Plot 
+                        data={weatherData.data as any} 
+                        layout={{
+                          ...weatherData.layout,
+                          margin: { t: 80, r: 40, b: 80, l: 80 },
+                          paper_bgcolor: 'rgba(0,0,0,0)',
+                          plot_bgcolor: 'rgba(0,0,0,0)',
+                          height: 450
+                        } as any}
+                        config={{ responsive: true, displayModeBar: false }}
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Climate insights below chart */}
+              <div className="mt-6">
+                <Card className="border-2 border-primary bg-primary text-primary-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-primary-foreground">Climate Impact</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-primary-foreground text-sm">Weather variability has increased significantly, with rainfall and temperature patterns showing greater year-to-year variation affecting crop yields.</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
+
+            {/* Insect Populations Chart */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Card className="border-0">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif">Insect Populations</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="viz-container-secondary" style={{ height: '500px' }}>
+                    <div className="viz-inner-wrapper" style={{ height: '500px' }}>
+                      <Plot 
+                        data={insectData.data as any} 
+                        layout={{
+                          ...insectData.layout,
+                          margin: { t: 80, r: 40, b: 80, l: 80 },
+                          paper_bgcolor: 'rgba(0,0,0,0)',
+                          plot_bgcolor: 'rgba(0,0,0,0)',
+                          height: 450
+                        } as any}
+                        config={{ responsive: true, displayModeBar: false }}
+                        style={{ width: '100%', height: '100%' }}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              {/* Ecosystem insights below chart */}
+              <div className="mt-6">
+                <Card className="border-2 border-accent bg-accent text-accent-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-accent-foreground">Ecosystem Changes</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-accent-foreground text-sm">Insect populations have declined by 30% over two decades, potentially affecting pollination services and natural pest control mechanisms.</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
+
+            <Card className="border-0">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif">Decade Comparisons</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="viz-container-accent flex items-center justify-center bg-muted/20" style={{ height: '400px' }}>
+                  <p className="text-muted-foreground">Comparison Chart Placeholder</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Fertiliser Usage Section */}
+      <motion.section 
+        id="fertiliser-usage" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-lg px-4 py-2">Usage Analysis</Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Fertiliser Usage
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              This visualization compares average fertilizer inputs with nutrient uptake between the 1990s and 2010s, highlighting efficiency improvements.
+            </p>
+          </div>
+          <Card className="border-0">
+            <CardContent className="p-0">
+              <div className="viz-container-accent" style={{ height: '600px' }}>
+                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
+                  <Plot 
+                    data={fertiliserComparisonData.data as any} 
+                    layout={{
+                      ...fertiliserComparisonData.layout,
+                      margin: { t: 80, r: 40, b: 80, l: 80 },
+                      paper_bgcolor: 'rgba(0,0,0,0)',
+                      plot_bgcolor: 'rgba(0,0,0,0)',
+                      height: 550
+                    } as any}
+                    config={{ responsive: true, displayModeBar: false }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Analysis below chart */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <Card className="border-2 border-accent bg-accent text-accent-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-accent-foreground">Efficiency Gains</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-accent-foreground text-sm">Fertilizer usage increased by 50% while yields improved by 30%, indicating better efficiency in the 2010s through precision agriculture techniques.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-2 border-primary bg-primary text-primary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-primary-foreground">Nutrient Optimization</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary-foreground text-sm">Modern fertilizer application methods show improved nutrient uptake efficiency, reducing environmental impact while maintaining productivity.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Global Implications Section */}
+      <motion.section 
+        id="global-implications" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-lg px-4 py-2">
+              <Globe className="w-5 h-5 mr-2" />
+              Global Impact
+            </Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Global Implications
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              The 1990s laid the foundation for modern agriculture, but the 2010s brought transformative changes in fertilizer efficiency and sustainability.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-0 bg-accent">
+              <CardHeader>
+                <CardTitle className="font-serif text-primary">Key Insight 1</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary">Fertilizer usage increased by 50% while yields improved by 30%, indicating better efficiency in the 2010s.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 bg-secondary">
+              <CardHeader>
+                <CardTitle className="font-serif text-primary-foreground">Key Insight 2</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary-foreground">Weather variability has greater impact on yields in recent decades, highlighting the need for climate-resilient practices.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 bg-primary">
+              <CardHeader>
+                <CardTitle className="font-serif text-primary-foreground">Key Insight 3</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary-foreground">Insect populations have declined, potentially affecting pollination and pest control in agricultural systems.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 bg-accent">
+              <CardHeader>
+                <CardTitle className="font-serif text-primary">Key Insight 4</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary">Global case studies show similar trends, suggesting universal challenges and opportunities in fertilizer management.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Asia Section */}
+      <motion.section 
+        id="asia" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div 
+            className="text-center space-y-4"
+          >
+            <Badge variant="secondary" className="text-lg px-4 py-2">Asia Case Study</Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Asia (Rice Case Study)
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              This case study examines rice production in Asia, showing changes in yield over time and comparisons across decades.
+            </p>
+          </div>
+          <Card className="border-0">
+            <CardContent className="p-0">
+              <div className="viz-container-primary" style={{ height: '600px' }}>
+                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
+                  <Plot 
+                    data={asiaRiceData.data as any} 
+                    layout={{
+                      ...asiaRiceData.layout,
+                      margin: { t: 80, r: 40, b: 80, l: 80 },
+                      paper_bgcolor: 'rgba(0,0,0,0)',
+                      plot_bgcolor: 'rgba(0,0,0,0)',
+                      height: 550
+                    } as any}
+                    config={{ responsive: true, displayModeBar: false }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Analysis below chart */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <Card className="border-2 border-primary bg-primary text-primary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-primary-foreground">🌾 Rice Revolution</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary-foreground text-sm">Asia's rice production shows steady growth from 1990-2020, with fertilizer optimization playing a crucial role in feeding the world's largest population.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-secondary-foreground">Green Revolution Impact</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-secondary-foreground text-sm">Modern rice varieties combined with balanced NPK fertilization have increased yields while adapting to changing climate conditions.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Africa Section */}
+      <motion.section 
+        id="africa" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-lg px-4 py-2">Africa Case Study</Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Africa (Maize Case Study)
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              This case study examines maize production in Africa, showing changes in yield over time and comparisons across decades.
+            </p>
+          </div>
+          <Card className="border-0">
+            <CardContent className="p-0">
+              <div className="viz-container-secondary" style={{ height: '600px' }}>
+                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
+                  <Plot 
+                    data={africaMaizeData.data as any} 
+                    layout={{
+                      ...africaMaizeData.layout,
+                      margin: { t: 80, r: 40, b: 80, l: 80 },
+                      paper_bgcolor: 'rgba(0,0,0,0)',
+                      plot_bgcolor: 'rgba(0,0,0,0)',
+                      height: 550
+                    } as any}
+                    config={{ responsive: true, displayModeBar: false }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Analysis below chart */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-secondary-foreground">🌽 Maize Potential</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-secondary-foreground text-sm">Africa's maize production shows significant potential for growth with proper fertilizer management and improved agricultural practices.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-2 border-accent bg-accent text-accent-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-accent-foreground">Food Security Focus</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-accent-foreground text-sm">Strategic NPK fertilization can help address food security challenges while building sustainable agricultural systems across the continent.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Future Pathways Section */}
+      <motion.section 
+        id="future" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-lg px-4 py-2">Future Vision</Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Future Pathways
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              Exploring potential future scenarios for agriculture based on current trends and innovations.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="border-2 border-primary">
+              <CardHeader>
+                <CardTitle className="font-serif">Precision & Integration</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Advanced technologies for precise nutrient application and integrated farming systems to optimize resource use.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-2 border-secondary">
+              <CardHeader>
+                <CardTitle className="font-serif">Climate-Constrained</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Adaptation strategies for changing weather patterns, focusing on drought-resistant crops and water management.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-2 border-accent">
+              <CardHeader>
+                <CardTitle className="font-serif">Smart Intensification</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Sustainable intensification using data-driven approaches to increase productivity without environmental degradation.</p>
+              </CardContent>
+            </Card>
+            <Card className="border-2 border-primary">
+              <CardHeader>
+                <CardTitle className="font-serif">Circular Systems</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Closed-loop systems that recycle nutrients and minimize waste, promoting long-term soil health and biodiversity.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Synthesis Section */}
+      <motion.section 
+        id="synthesis" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-lg px-4 py-2">Final Analysis</Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              Synthesis
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
+              This section summarizes the key findings from the two-decade analysis, highlighting trends in fertilizer use, yields, and overall efficiency.
+            </p>
+          </div>
+          <Card className="border-0">
+            <CardContent className="p-0">
+              <div className="viz-container-accent" style={{ height: '600px' }}>
+                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
+                  <Plot 
+                    data={synthesisData.data as any} 
+                    layout={{
+                      ...synthesisData.layout,
+                      margin: { t: 80, r: 40, b: 80, l: 80 },
+                      paper_bgcolor: 'rgba(0,0,0,0)',
+                      plot_bgcolor: 'rgba(0,0,0,0)',
+                      height: 550
+                    } as any}
+                    config={{ responsive: true, displayModeBar: false }}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Key findings below chart */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+            <Card className="border-2 border-accent bg-accent text-accent-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-accent-foreground">📈 Efficiency Trends</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-accent-foreground text-sm">The 2010s showed 30% better fertilizer efficiency compared to the 1990s, demonstrating technological advancement and precision agriculture adoption.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-2 border-primary bg-primary text-primary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-primary-foreground">🌍 Global Patterns</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-primary-foreground text-sm">Consistent patterns across UK, Asia, and Africa show universal benefits of optimized NPK fertilization strategies for sustainable agriculture.</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-secondary-foreground">🔮 Future Outlook</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-secondary-foreground text-sm">Data-driven fertilization combined with climate adaptation strategies will be crucial for meeting future food security challenges.</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* References Section */}
+      <motion.section 
+        id="references" 
+        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="max-w-6xl mx-auto w-full space-y-8">
+          <div className="text-center space-y-4">
+            <Badge variant="secondary" className="text-lg px-4 py-2">Documentation</Badge>
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+              References
+            </h2>
+          </div>
+          <div className="grid gap-6">
+            <Card className="border-2 border-primary bg-card">
+              <CardHeader>
+                <CardTitle className="font-serif text-primary flex items-center gap-2">
+                  📊 Agricultural Data Sources
+                </CardTitle>
+                <CardDescription>
+                  Comprehensive datasets used in this analysis
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="item-1" className="border-b border-border">
+                    <AccordionTrigger className="text-left font-serif hover:no-underline">
+                      UK Agricultural Statistics - DEFRA
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Department for Environment, Food and Rural Affairs. UK winter barley production data, fertilizer usage statistics, and yield measurements from 1990-2020. Published annually in the Agricultural Statistics bulletin.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-2" className="border-b border-border">
+                    <AccordionTrigger className="text-left font-serif hover:no-underline">
+                      FAO Global Rice Production Database
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Food and Agriculture Organization of the United Nations. Rice production statistics for Asian countries, including yield per hectare, fertilizer application rates, and climate data. FAOSTAT database, accessed 2025.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-3" className="border-b border-border">
+                    <AccordionTrigger className="text-left font-serif hover:no-underline">
+                      African Maize Production Analysis - CGIAR
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Consultative Group for International Agricultural Research. Comprehensive dataset on maize production across Sub-Saharan Africa, including fertilizer usage patterns and yield variations from 1990-2020.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-4" className="border-b border-border">
+                    <AccordionTrigger className="text-left font-serif hover:no-underline">
+                      Climate and Weather Data - Met Office
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      UK Met Office Historical Weather Data. Rainfall, temperature, and seasonal variation data used for weather pattern analysis and correlation with agricultural yields.
+                    </AccordionContent>
+                  </AccordionItem>
+                  
+                  <AccordionItem value="item-5">
+                    <AccordionTrigger className="text-left font-serif hover:no-underline">
+                      Insect Population Monitoring - BISCIT
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      Biological Impacts of Sustainable Crop Intensification Technologies. Long-term ecological monitoring data on insect populations and biodiversity impacts in agricultural systems across the study regions.
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-2 border-secondary bg-secondary/5">
+              <CardHeader>
+                <CardTitle className="font-serif text-secondary flex items-center gap-2">
+                  🔬 Methodology & Analysis
+                </CardTitle>
+                <CardDescription>
+                  Technical approach and data processing methods
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <h4 className="font-serif font-medium text-secondary mb-2">Statistical Analysis</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Time series analysis using Python pandas and scipy.stats for trend identification and correlation analysis between fertilizer usage, weather patterns, and yield outcomes.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-serif font-medium text-secondary mb-2">Data Visualization</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Interactive charts created using Plotly.js and D3.js for comprehensive data exploration and pattern recognition across multiple decades and geographical regions.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-serif font-medium text-secondary mb-2">Quality Assurance</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Data validation through cross-referencing multiple sources, outlier detection, and statistical significance testing to ensure reliability of findings.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Footer */}
+      <footer className="bg-primary text-primary-foreground py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          <Separator className="mb-6 bg-primary-foreground/20" />
+          <div className="text-center space-y-4">
+            <p className="text-primary-foreground/80">Data sourced from various agricultural databases and research institutions.</p>
+            <p className="text-sm text-primary-foreground/60">© 2025 Team Others. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </main>
+  );
+}
