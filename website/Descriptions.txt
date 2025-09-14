@@ -1,0 +1,33 @@
+Figure 1: These plots show the trends in winter wheat yield for grain and straw across two time periods: 1990–2000 and 2010–2020. In the 1990–2000 period, grain yields start relatively high but decline toward the end of the decade, while straw yields show greater year-to-year variability and a general downward trend. In contrast, the 2010–2020 period shows grain yields that are more stable overall, with smaller fluctuations, whereas straw yields continue to decline more consistently over time. Together, the figures suggest that while grain yield has been maintained at a relatively steady level in the more recent decade, straw yield has decreased, pointing to possible changes in crop management, fertiliser use, or environmental conditions affecting biomass allocation.
+
+
+Figure 2: Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
+Description:
+This panel of two heatmaps compares the correlations between cereal yields (grain and straw) and aphid species counts for two time periods: 1990–2000 and 2010–2020.
+Rows: Grain and straw yield
+Columns: Each aphid species
+Cell values: Pearson correlation coefficient (range -1 to 1; color-coded, blue = negative, red = positive)
+Left panel (1990–2000): Shows mostly positive but weak correlations between grain/straw and insects, with the strongest between S. avenae and grain (0.38).
+Right panel (2010–2020): Shows weaker or negative correlations, especially for S. avenae and M. dirhodum, suggesting a possible shift in aphid-yield relationships over decades.
+
+Figure 4:
+
+Figure 5: Boxplots of Grain Yield, Straw Yield, Rainfall, and Temperature (1990–2000 vs 2010–2020)
+Description:
+This 2×2 panel of boxplots compares key agronomic and climate variables for two periods (1990–2000 and 2010–2020).
+Top row: Grain yield (left) and straw yield (right)
+Bottom row: Total summer rainfall (left) and mean summer temperature (right)
+Each plot: Shows distribution, median, and range for each period.
+Notable trends:
+Grain yield increased in the later period, while straw yield is similar or slightly lower.
+Total summer rainfall is variable in both periods.
+Mean summer temperature is higher in 2010–2020, indicating a warming trend.
+
+Figure 6: Yearly Abundance of Aphid Species (1990–2020) – Grouped Bar Chart
+Description:
+This grouped bar chart shows the annual counts of three major aphid species (Metopolophium dirhodum, Rhopalosiphum padi, and Sitobion avenae) from 1990 to 2020.
+Each year on the X-axis features three colored bars (blue, green, purple), each representing one species.
+Y-axis: Total count of aphids.
+This plot makes compare relative abundance between species and between years, revealing both outbreak years and longer-term declines or changes in species dominance over time.
+
+
