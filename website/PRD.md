@@ -156,37 +156,23 @@ You can use two approaches for Plotly visualizations:
    ```
 2. **Export as JSON**  
    Save the figure as a `.json` file.
-3. **Import JSON in React**  
-   Place the JSON file in your `public/` or `src/assets/` directory.
-4. **Render in React with Plotly.js**  
+3. **Place JSON Files in `website/plotly-json/`**  
+   Store all Plotly JSON exports in the `website/plotly-json/` directory.
+4. **Import JSON in React**  
+   Import the JSON file from `website/plotly-json/` in your React components.
+5. **Render in React with Plotly.js**  
    Use [react-plotly.js](https://github.com/plotly/react-plotly.js) or load Plotly.js directly:
    ```jsx
    // Example using react-plotly.js
    import Plot from 'react-plotly.js';
-   import figData from './assets/my_figure.json';
+   import figData from '../plotly-json/my_figure.json';
 
    <Plot data={figData.data} layout={figData.layout} config={figData.config} />
    ```
-5. **Apply Colour Scheme**  
+6. **Apply Colour Scheme**  
    - In Python, set the figure’s colors to match your palette.
    - Or, override colors in the imported JSON/layout in React.
 
-#### B. HTML Export (for interactive embeds)
-1. **Export Plotly Figure as HTML**  
-   In Jupyter, export your figure as an interactive HTML file:
-   ```python
-   fig.write_html('my_figure.html')
-   ```
-2. **Place HTML Files in Website Folder**  
-   Create a folder (e.g. `website/plotly_html/`) and put all Plotly HTML exports inside it.
-3. **Import and Embed HTML in React**  
-   Use an `<iframe>` or a React component to embed the HTML file:
-   ```jsx
-   <iframe src={require('./plotly_html/my_figure.html')} title="Plotly Chart" style={{width: '100%', height: 500, border: 'none'}} />
-   ```
-   Or, copy the HTML content and render it using `dangerouslySetInnerHTML` if needed.
-
-> **Note:** The HTML export preserves all Plotly interactivity. Use this method for complex or highly interactive charts that are easier to export as HTML than JSON.
 
 ## 6. Animation Requirements
 
