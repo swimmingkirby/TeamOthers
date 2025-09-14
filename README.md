@@ -8,7 +8,7 @@ We have developed basic, **interactive** data visualisations that users can easi
 
 You can view the web resource developed in this project here: [Webpage Link](#)  
 
-We further developed a prediction model of insect total prevalance per month based on previous prevalance data. This is a demonstration of how predictive tools could be integrated into the web resource to be used by farmers.
+We further developed an example **prediction model** of insect total prevalance per month based on previous prevalance data. This is a demonstration of how predictive tools could be integrated into the web resource to be used by farmers.
 
 This platform has been developed with the aim of being **accessible to those who would most benefit from the data**. Plots are designed to be modular and interactive.
 
