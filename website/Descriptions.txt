@@ -1,5 +1,5 @@
-Figure 1: These plots show the trends in winter wheat yield for grain and straw across two time periods: 1990–2000 and 2010–2020. In the 1990–2000 period, grain yields start relatively high but decline toward the end of the decade, while straw yields show greater year-to-year variability and a general downward trend. In contrast, the 2010–2020 period shows grain yields that are more stable overall, with smaller fluctuations, whereas straw yields continue to decline more consistently over time. Together, the figures suggest that while grain yield has been maintained at a relatively steady level in the more recent decade, straw yield has decreased, pointing to possible changes in crop management, fertiliser use, or environmental conditions affecting biomass allocation.
-
+Figure 1: Grain and Straw Yield of Winter Wheat (1990–2000 vs 2010–2020)
+These plots show the trends in winter wheat yield for grain and straw across two time periods: 1990–2000 and 2010–2020. In the 1990–2000 period, grain yields start relatively high but decline toward the end of the decade, while straw yields show greater year-to-year variability and a general downward trend. In contrast, the 2010–2020 period shows grain yields that are more stable overall, with smaller fluctuations, whereas straw yields continue to decline more consistently over time. Together, the figures suggest that while grain yield has been maintained at a relatively steady level in the more recent decade, straw yield has decreased, pointing to possible changes in crop management, fertiliser use, or environmental conditions affecting biomass allocation.
 
 Figure 2: Correlation Heatmaps — Grain/Straw vs. Insect Species (1990–2000 vs 2010–2020)
 Description:
@@ -10,7 +10,8 @@ Cell values: Pearson correlation coefficient (range -1 to 1; color-coded, blue =
 Left panel (1990–2000): Shows mostly positive but weak correlations between grain/straw and insects, with the strongest between S. avenae and grain (0.38).
 Right panel (2010–2020): Shows weaker or negative correlations, especially for S. avenae and M. dirhodum, suggesting a possible shift in aphid-yield relationships over decades.
 
-Figure 4:
+Figure 4: Fertiliser use (1990–2000 vs 2010–2020)
+These charts compare the relative proportions of fertiliser use in winter wheat experiments across two periods: 1990–2000 and 2010–2020. In the earlier decade, nitrogen accounted for just over half of total fertiliser inputs (53.5%), with potassium contributing around a third (33.5%) and phosphorus making up 13%. By contrast, in the 2010–2020 period, nitrogen use increased to 61.5% and potassium rose slightly to 38.5%, while phosphorus inputs dropped to 0%. It is important to note that the absence of phosphorus application in the more recent decade does not imply a depletion of soil phosphorus. Instead, this shift reflects management practices: when soil phosphorus levels are already sufficient, additional phosphorus fertiliser is unnecessary. The trend highlights both the central role of nitrogen in driving yields and the way fertiliser strategies adapt to soil nutrient availability over time.
 
 Figure 5: Boxplots of Grain Yield, Straw Yield, Rainfall, and Temperature (1990–2000 vs 2010–2020)
 Description:
