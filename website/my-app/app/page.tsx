@@ -12,6 +12,7 @@ import { Button } from "../components/ui/button";
 import { Separator } from "../components/ui/separator";
 import { motion } from "framer-motion";
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { ArrowDown, BarChart3, Users, Globe } from "lucide-react";
 
 export default function Home() {
@@ -364,16 +365,113 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <Card className="border-0">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-serif">Grain vs Straw Yields Over Time</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="viz-container-accent flex items-center justify-center bg-muted/20" style={{ height: '400px' }}>
-                  <p className="text-muted-foreground">Yields Chart Placeholder</p>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Correlation Analysis Chart */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <Card className="border-0">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif">Correlation: Grain/Straw vs Insect Species</CardTitle>
+                  <p className="text-muted-foreground text-sm">
+                    Analysis of correlations between grain and straw production with insect species populations across two decades
+                  </p>
+                </CardHeader>
+                <CardContent className="p-4">
+                  <div className="w-full flex justify-center">
+                    <Image 
+                      src="/img/correlation-grain-straw-insect.png" 
+                      alt="Correlation heatmap showing relationships between grain/straw production and insect species populations comparing 1990-2000 vs 2010-2020"
+                      width={800}
+                      height={400}
+                      className="max-w-full h-auto rounded-lg shadow-lg"
+                      style={{ maxHeight: '600px' }}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Correlation insights below chart */}
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="border-2 border-primary bg-primary text-primary-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-primary-foreground">1990-2000 Patterns</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-primary-foreground text-sm">
+                      Strong positive correlations (0.29-0.38) between grain production and insect populations, indicating a more balanced ecosystem with higher biodiversity supporting agricultural productivity.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-secondary-foreground">2010-2020 Shift</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-secondary-foreground text-sm">
+                      Negative correlations (-0.12 to -0.30) suggest intensified farming practices may have disrupted natural insect-crop relationships, highlighting the need for sustainable agriculture approaches.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
+
+            {/* Strip 8 Decade Comparison */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <Card className="border-0">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif">Strip 8 Analysis: Two Decade Comparison</CardTitle>
+                  <p className="text-muted-foreground text-sm">
+                    Detailed comparison of agricultural metrics and weather patterns for Strip 8 across 1990-2000 vs 2010-2020
+                  </p>
+                </CardHeader>
+                <CardContent className="p-4">
+                  <div className="w-full flex justify-center">
+                    <Image 
+                      src="/img/strip8-decade-comparison.png" 
+                      alt="Box plot comparison showing grain yield, straw yield, summer rainfall, and summer temperature for Strip 8 comparing 1990-2000 vs 2010-2020 periods"
+                      width={1000}
+                      height={400}
+                      className="max-w-full h-auto rounded-lg shadow-lg"
+                      style={{ maxHeight: '500px' }}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Strip 8 insights below chart */}
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="border-2 border-primary bg-primary text-primary-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-primary-foreground">📈 Yield Improvements</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-primary-foreground text-sm">
+                      Grain yields remained stable around 6 tonnes/ha in the 1990s but became more consistent in the 2010s (5.7 tonnes/ha), while straw yields showed similar patterns with reduced variability in recent decades.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-secondary-foreground">🌦️ Climate Patterns</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-secondary-foreground text-sm">
+                      Summer rainfall decreased significantly from ~200mm in the 1990s to ~175mm in the 2010s, while summer temperatures remained stable around 16.5°C, indicating adaptation to drier conditions.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </motion.div>
 
             {/* Weather Patterns Chart */}
             <motion.div
@@ -428,36 +526,42 @@ export default function Home() {
             >
               <Card className="border-0">
                 <CardHeader className="pb-2">
-                  <CardTitle className="font-serif">Insect Populations</CardTitle>
+                  <CardTitle className="font-serif">Yearly Abundance of Aphid Species (1990-2020)</CardTitle>
+                  <p className="text-muted-foreground text-sm">
+                    Long-term monitoring of key aphid species showing population dynamics over three decades
+                  </p>
                 </CardHeader>
-                <CardContent className="p-0">
-                  <div className="viz-container-secondary" style={{ height: '500px' }}>
-                    <div className="viz-inner-wrapper" style={{ height: '500px' }}>
-                      <Plot
-                        data={fertiliserData10s.data as any}
-                        layout={{
-                          ...fertiliserData10s.layout,
-                          margin: { t: 80, r: 40, b: 80, l: 80 },
-                          paper_bgcolor: 'rgba(0,0,0,0)',
-                          plot_bgcolor: 'rgba(0,0,0,0)',
-                          height: 450
-                        } as any}
-                        config={{ responsive: true, displayModeBar: false }}
-                        style={{ width: '100%', height: '100%' }}
-                      />
-                    </div>
+                <CardContent className="p-4">
+                  <div className="w-full flex justify-center">
+                    <Image 
+                      src="/img/yearly-aphid-abundance.png" 
+                      alt="Bar chart showing yearly abundance of three aphid species - Metopolophium dirhodum (Rose-grain aphid), Rhopalosiphum padi (Bird cherry-oat aphid), and Sitobion avenae (English grain aphid) from 1990 to 2020"
+                      width={1200}
+                      height={500}
+                      className="max-w-full h-auto rounded-lg shadow-lg"
+                      style={{ maxHeight: '600px' }}
+                    />
                   </div>
                 </CardContent>
               </Card>
 
               {/* Ecosystem insights below chart */}
-              <div className="mt-6">
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card className="border-2 border-accent bg-accent text-accent-foreground">
                   <CardHeader className="pb-2">
-                    <CardTitle className="font-serif text-accent-foreground">Ecosystem Changes</CardTitle>
+                    <CardTitle className="font-serif text-accent-foreground">🐛 Population Peaks</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-accent-foreground text-sm">Insect populations have declined by 30% over two decades, potentially affecting pollination services and natural pest control mechanisms.</p>
+                    <p className="text-accent-foreground text-sm">English grain aphid (Sitobion avenae) showed dramatic population spikes in 1996 (&gt;12,000) and 2011 (~6,000), indicating climate-driven outbreak years with potential crop damage.</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="font-serif text-secondary-foreground">📉 Recent Decline</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-secondary-foreground text-sm">Overall aphid populations have declined significantly since 2014, with most recent years showing very low abundance across all species, potentially impacting natural pest control and pollination services.</p>
                   </CardContent>
                 </Card>
               </div>
