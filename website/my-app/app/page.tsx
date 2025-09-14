@@ -4,7 +4,6 @@ import summaryData1990 from "../../plotly-json/1_SummaryPlot_1990.json";
 import summaryData2010 from "../../plotly-json/1_SummaryPlot_2010.json";
 import fertiliserData90s from '../../plotly-json/4_FertiliserUse_90s.json';
 import fertiliserData10s from '../../plotly-json/4_FertiliserUse_10s.json';
-import orderNumberData from '../../plotly-json/order-number.json';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
@@ -56,8 +55,8 @@ export default function Home() {
       </section>
 
       {/* Two Decade Analysis Section */}
-      <motion.section 
-        id="two-decade" 
+      <motion.section
+        id="two-decade"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -81,8 +80,8 @@ export default function Home() {
             <CardContent className="p-0">
               <div className="viz-container-primary" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot 
-                    data={summaryData1990.data as any} 
+                  <Plot
+                    data={summaryData1990.data as any}
                     layout={{
                       ...summaryData1990.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -97,7 +96,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Analysis below chart */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <Card className="border-2 border-primary bg-primary text-primary-foreground">
@@ -110,7 +109,7 @@ export default function Home() {
                 <p className="text-primary-foreground text-sm">Despite high fertiliser inputs (130+ kg N/ha), yields dropped significantly due to water stress. This demonstrates the critical role of weather in nutrient uptake efficiency.</p>
               </CardContent>
             </Card>
-            
+
             <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-secondary-foreground flex items-center gap-2">
@@ -126,69 +125,177 @@ export default function Home() {
       </motion.section>
 
       {/* Team Section */}
-      <motion.section 
-        id="team" 
-        className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
+      <motion.section
+        id="team"
+        className="py-16 px-4 bg-muted/30"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
       >
-        <div className="max-w-6xl mx-auto w-full space-y-12">
-          <div className="text-center space-y-4">
-            <Badge variant="secondary" className="mb-4 text-lg px-4 py-2">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <Badge variant="outline" className="text-lg px-4 py-2 mb-4">
               <Users className="w-5 h-5 mr-2" />
               Our Team
             </Badge>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-6">
               Meet Team Others
             </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              A diverse group of researchers and data scientists passionate about understanding agricultural transformation through data.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="text-center">
-              <CardHeader>
-                <Avatar className="w-32 h-32 mx-auto mb-4">
-                  <AvatarImage src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200" alt="Alice Johnson" />
-                  <AvatarFallback>AJ</AvatarFallback>
-                </Avatar>
-                <CardTitle className="font-serif">Alice Johnson</CardTitle>
-                <CardDescription>Data Scientist</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="text-center">
-              <CardHeader>
-                <Avatar className="w-32 h-32 mx-auto mb-4">
-                  <AvatarImage src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200" alt="Bob Smith" />
-                  <AvatarFallback>BS</AvatarFallback>
-                </Avatar>
-                <CardTitle className="font-serif">Bob Smith</CardTitle>
-                <CardDescription>Agronomist</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="text-center">
-              <CardHeader>
-                <Avatar className="w-32 h-32 mx-auto mb-4">
-                  <AvatarImage src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200" alt="Carol Lee" />
-                  <AvatarFallback>CL</AvatarFallback>
-                </Avatar>
-                <CardTitle className="font-serif">Carol Lee</CardTitle>
-                <CardDescription>Environmental Analyst</CardDescription>
-              </CardHeader>
-            </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Team Member 1 - Hamza */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <Avatar className="w-32 h-32 mx-auto mb-4">
+                    <AvatarImage src="/img/hamza.jpg" alt="Hamza Wahbi" />
+                    <AvatarFallback>HW</AvatarFallback>
+                  </Avatar>
+                  <h3 className="font-serif text-xl font-semibold mb-2">Hamza Wahbi</h3>
+                  <p className="text-muted-foreground mb-4">Data Scientist & Research Lead</p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="https://www.linkedin.com/in/hamzawahbi/" target="_blank" rel="noopener noreferrer">
+                      LinkedIn Profile
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Team Member 2 - Furkan */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <Avatar className="w-32 h-32 mx-auto mb-4">
+                    <AvatarImage src="/api/placeholder/128/128" alt="Furkan T" />
+                    <AvatarFallback>FT</AvatarFallback>
+                  </Avatar>
+                  <h3 className="font-serif text-xl font-semibold mb-2">Furkan T</h3>
+                  <p className="text-muted-foreground mb-4">Agricultural Systems Analyst</p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="https://www.linkedin.com/in/furkan-t-88926a155/" target="_blank" rel="noopener noreferrer">
+                      LinkedIn Profile
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Team Member 3 - Emma */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <Avatar className="w-32 h-32 mx-auto mb-4">
+                    <AvatarImage src="/img/emma.jpg" alt="Emma Watts" />
+                    <AvatarFallback>EW</AvatarFallback>
+                  </Avatar>
+                  <h3 className="font-serif text-xl font-semibold mb-2">Emma Watts</h3>
+                  <p className="text-muted-foreground mb-4">Environmental Data Specialist</p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="https://www.linkedin.com/in/emma-watts-6a449119b/" target="_blank" rel="noopener noreferrer">
+                      LinkedIn Profile
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Team Member 4 - Akram */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <Avatar className="w-32 h-32 mx-auto mb-4">
+                    <AvatarImage src="/img/akram.jpg" alt="Akram Atmani" />
+                    <AvatarFallback>AA</AvatarFallback>
+                  </Avatar>
+                  <h3 className="font-serif text-xl font-semibold mb-2">Akram Atmani</h3>
+                  <p className="text-muted-foreground mb-4">Statistical Modeling Expert</p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="https://www.linkedin.com/in/akram-atmani/" target="_blank" rel="noopener noreferrer">
+                      LinkedIn Profile
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Team Member 5 - Shihan */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <Avatar className="w-32 h-32 mx-auto mb-4">
+                    <AvatarImage src="/api/placeholder/128/128" alt="Shihan Zhang" />
+                    <AvatarFallback>SZ</AvatarFallback>
+                  </Avatar>
+                  <h3 className="font-serif text-xl font-semibold mb-2">Shihan Zhang</h3>
+                  <p className="text-muted-foreground mb-4">Data Visualization Specialist</p>
+                  <Button variant="outline" size="sm" asChild>
+                    <a href="https://www.linkedin.com/in/shihan-zhang-a2749b219/" target="_blank" rel="noopener noreferrer">
+                      LinkedIn Profile
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Team Member 6 - Isabella */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Card className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <Avatar className="w-32 h-32 mx-auto mb-4">
+                    <AvatarImage src="/img/Isabella.jpg" alt="Isabella" />
+                    <AvatarFallback>IB</AvatarFallback>
+                  </Avatar>
+                  <h3 className="font-serif text-xl font-semibold mb-2">Isabella</h3>
+                  <p className="text-muted-foreground mb-4">Research Assistant</p>
+                  <Button variant="outline" size="sm" disabled>
+                    LinkedIn Coming Soon
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
-          <Card>
-            <CardContent className="p-6">
-              <p className="text-lg text-center text-muted-foreground">
-                Team Others is dedicated to exploring the intersections of agriculture, data, and sustainability. Our mission is to provide insights that drive informed decisions for a better future.
-              </p>
-            </CardContent>
-          </Card>
         </div>
       </motion.section>
 
       {/* UK Winter Barley Section */}
-      <motion.section 
-        id="uk-winter-barley" 
+      <motion.section
+        id="uk-winter-barley"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -196,7 +303,7 @@ export default function Home() {
         viewport={{ once: true, margin: "-100px" }}
       >
         <div className="max-w-6xl mx-auto w-full space-y-8">
-          <motion.div 
+          <motion.div
             className="text-center space-y-4"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -211,7 +318,7 @@ export default function Home() {
               This case study examines the impact of NPK fertilizers on UK winter barley production over two decades, including trends in fertilizer usage, yields, weather conditions, and insect populations.
             </p>
           </motion.div>
-          
+
           <div className="grid gap-8">
             {/* Fertiliser Usage Chart */}
             <motion.div
@@ -227,8 +334,8 @@ export default function Home() {
                 <CardContent className="p-0">
                   <div className="viz-container-secondary" style={{ height: '500px' }}>
                     <div className="viz-inner-wrapper" style={{ height: '500px' }}>
-                      <Plot 
-                        data={fertiliserData90s.data as any} 
+                      <Plot
+                        data={fertiliserData90s.data as any}
                         layout={{
                           ...fertiliserData90s.layout,
                           margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -243,7 +350,7 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               {/* Fertiliser insights below chart */}
               <div className="mt-6">
                 <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
@@ -282,8 +389,8 @@ export default function Home() {
                 <CardContent className="p-0">
                   <div className="viz-container-primary" style={{ height: '500px' }}>
                     <div className="viz-inner-wrapper" style={{ height: '500px' }}>
-                      <Plot 
-                        data={summaryData2010.data as any} 
+                      <Plot
+                        data={summaryData2010.data as any}
                         layout={{
                           ...summaryData2010.layout,
                           margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -298,7 +405,7 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               {/* Climate insights below chart */}
               <div className="mt-6">
                 <Card className="border-2 border-primary bg-primary text-primary-foreground">
@@ -326,8 +433,8 @@ export default function Home() {
                 <CardContent className="p-0">
                   <div className="viz-container-secondary" style={{ height: '500px' }}>
                     <div className="viz-inner-wrapper" style={{ height: '500px' }}>
-                      <Plot 
-                        data={fertiliserData10s.data as any} 
+                      <Plot
+                        data={fertiliserData10s.data as any}
                         layout={{
                           ...fertiliserData10s.layout,
                           margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -342,7 +449,7 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               {/* Ecosystem insights below chart */}
               <div className="mt-6">
                 <Card className="border-2 border-accent bg-accent text-accent-foreground">
@@ -371,8 +478,8 @@ export default function Home() {
       </motion.section>
 
       {/* Fertiliser Usage Section */}
-      <motion.section 
-        id="fertiliser-usage" 
+      <motion.section
+        id="fertiliser-usage"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -393,8 +500,8 @@ export default function Home() {
             <CardContent className="p-0">
               <div className="viz-container-accent" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot 
-                    data={summaryData2010.data as any} 
+                  <Plot
+                    data={summaryData2010.data as any}
                     layout={{
                       ...summaryData2010.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -409,7 +516,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Analysis below chart */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <Card className="border-2 border-accent bg-accent text-accent-foreground">
@@ -420,7 +527,7 @@ export default function Home() {
                 <p className="text-accent-foreground text-sm">Fertilizer usage increased by 50% while yields improved by 30%, indicating better efficiency in the 2010s through precision agriculture techniques.</p>
               </CardContent>
             </Card>
-            
+
             <Card className="border-2 border-primary bg-primary text-primary-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-primary-foreground">Nutrient Optimization</CardTitle>
@@ -434,8 +541,8 @@ export default function Home() {
       </motion.section>
 
       {/* Global Implications Section */}
-      <motion.section 
-        id="global-implications" 
+      <motion.section
+        id="global-implications"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -493,8 +600,8 @@ export default function Home() {
       </motion.section>
 
       {/* Asia Section */}
-      <motion.section 
-        id="asia" 
+      <motion.section
+        id="asia"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -502,7 +609,7 @@ export default function Home() {
         viewport={{ once: true, margin: "-100px" }}
       >
         <div className="max-w-6xl mx-auto w-full space-y-8">
-          <div 
+          <div
             className="text-center space-y-4"
           >
             <Badge variant="secondary" className="text-lg px-4 py-2">Asia Case Study</Badge>
@@ -517,8 +624,8 @@ export default function Home() {
             <CardContent className="p-0">
               <div className="viz-container-primary" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot 
-                    data={summaryData1990.data as any} 
+                  <Plot
+                    data={summaryData1990.data as any}
                     layout={{
                       ...summaryData1990.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -533,7 +640,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Analysis below chart */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <Card className="border-2 border-primary bg-primary text-primary-foreground">
@@ -544,7 +651,7 @@ export default function Home() {
                 <p className="text-primary-foreground text-sm">Asia's rice production shows steady growth from 1990-2020, with fertilizer optimization playing a crucial role in feeding the world's largest population.</p>
               </CardContent>
             </Card>
-            
+
             <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-secondary-foreground">Green Revolution Impact</CardTitle>
@@ -558,8 +665,8 @@ export default function Home() {
       </motion.section>
 
       {/* Africa Section */}
-      <motion.section 
-        id="africa" 
+      <motion.section
+        id="africa"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -580,8 +687,8 @@ export default function Home() {
             <CardContent className="p-0">
               <div className="viz-container-secondary" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot 
-                    data={summaryData2010.data as any} 
+                  <Plot
+                    data={summaryData2010.data as any}
                     layout={{
                       ...summaryData2010.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -596,7 +703,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Analysis below chart */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
@@ -607,7 +714,7 @@ export default function Home() {
                 <p className="text-secondary-foreground text-sm">Africa's maize production shows significant potential for growth with proper fertilizer management and improved agricultural practices.</p>
               </CardContent>
             </Card>
-            
+
             <Card className="border-2 border-accent bg-accent text-accent-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-accent-foreground">Food Security Focus</CardTitle>
@@ -621,8 +728,8 @@ export default function Home() {
       </motion.section>
 
       {/* Future Pathways Section */}
-      <motion.section 
-        id="future" 
+      <motion.section
+        id="future"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -677,8 +784,8 @@ export default function Home() {
       </motion.section>
 
       {/* Synthesis Section */}
-      <motion.section 
-        id="synthesis" 
+      <motion.section
+        id="synthesis"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -699,8 +806,8 @@ export default function Home() {
             <CardContent className="p-0">
               <div className="viz-container-accent" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot 
-                    data={fertiliserData90s.data as any} 
+                  <Plot
+                    data={fertiliserData90s.data as any}
                     layout={{
                       ...fertiliserData90s.layout,
                       margin: { t: 80, r: 40, b: 80, l: 80 },
@@ -715,7 +822,7 @@ export default function Home() {
               </div>
             </CardContent>
           </Card>
-          
+
           {/* Key findings below chart */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
             <Card className="border-2 border-accent bg-accent text-accent-foreground">
@@ -726,7 +833,7 @@ export default function Home() {
                 <p className="text-accent-foreground text-sm">The 2010s showed 30% better fertilizer efficiency compared to the 1990s, demonstrating technological advancement and precision agriculture adoption.</p>
               </CardContent>
             </Card>
-            
+
             <Card className="border-2 border-primary bg-primary text-primary-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-primary-foreground">🌍 Global Patterns</CardTitle>
@@ -735,7 +842,7 @@ export default function Home() {
                 <p className="text-primary-foreground text-sm">Consistent patterns across UK, Asia, and Africa show universal benefits of optimized NPK fertilization strategies for sustainable agriculture.</p>
               </CardContent>
             </Card>
-            
+
             <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-secondary-foreground">🔮 Future Outlook</CardTitle>
@@ -749,8 +856,8 @@ export default function Home() {
       </motion.section>
 
       {/* References Section */}
-      <motion.section 
-        id="references" 
+      <motion.section
+        id="references"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -784,7 +891,7 @@ export default function Home() {
                       Department for Environment, Food and Rural Affairs. UK winter barley production data, fertilizer usage statistics, and yield measurements from 1990-2020. Published annually in the Agricultural Statistics bulletin.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-2" className="border-b border-border">
                     <AccordionTrigger className="text-left font-serif hover:no-underline">
                       FAO Global Rice Production Database
@@ -793,7 +900,7 @@ export default function Home() {
                       Food and Agriculture Organization of the United Nations. Rice production statistics for Asian countries, including yield per hectare, fertilizer application rates, and climate data. FAOSTAT database, accessed 2025.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-3" className="border-b border-border">
                     <AccordionTrigger className="text-left font-serif hover:no-underline">
                       African Maize Production Analysis - CGIAR
@@ -802,7 +909,7 @@ export default function Home() {
                       Consultative Group for International Agricultural Research. Comprehensive dataset on maize production across Sub-Saharan Africa, including fertilizer usage patterns and yield variations from 1990-2020.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-4" className="border-b border-border">
                     <AccordionTrigger className="text-left font-serif hover:no-underline">
                       Climate and Weather Data - Met Office
@@ -811,7 +918,7 @@ export default function Home() {
                       UK Met Office Historical Weather Data. Rainfall, temperature, and seasonal variation data used for weather pattern analysis and correlation with agricultural yields.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-5">
                     <AccordionTrigger className="text-left font-serif hover:no-underline">
                       Insect Population Monitoring - BISCIT
@@ -823,7 +930,7 @@ export default function Home() {
                 </Accordion>
               </CardContent>
             </Card>
-            
+
             <Card className="border-2 border-secondary bg-secondary/5">
               <CardHeader>
                 <CardTitle className="font-serif text-secondary flex items-center gap-2">
