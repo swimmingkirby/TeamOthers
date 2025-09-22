@@ -325,11 +325,11 @@ export default function Home() {
               </Button>
             </CardHeader>
             <CardContent className="p-2 sm:p-4">
-              <div className={`w-full overflow-hidden ${isMobile ? 'h-[400px]' : 'h-[600px]'}`}>
+              <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[400px]' : 'h-[600px]'}`}>
                 <Plot
                   data={summaryData1990.data as any}
-                  layout={getChartLayout(summaryData1990.layout, isMobile) as any}
-                  config={getChartConfig(isMobile)}
+                  layout={getChartLayout(summaryData1990.layout, isMobile ?? false) as any}
+                  config={getChartConfig(isMobile ?? false)}
                   style={{ width: '100%', height: '100%' }}
                   useResizeHandler={true}
                   className="w-full h-full"
@@ -578,11 +578,11 @@ export default function Home() {
                   </Button>
                 </CardHeader>
                 <CardContent className="p-2 sm:p-4">
-                  <div className={`w-full overflow-hidden ${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
+                  <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[400px]' : 'h-[500px]'}`}>
                     <Plot
                       data={fertiliserData90s.data as any}
-                      layout={getChartLayout(fertiliserData90s.layout, isMobile) as any}
-                      config={getChartConfig(isMobile)}
+                      layout={getChartLayout(fertiliserData90s.layout, isMobile ?? false) as any}
+                      config={getChartConfig(isMobile ?? false)}
                       style={{ width: '100%', height: '100%' }}
                       useResizeHandler={true}
                       className="w-full h-full"
@@ -882,11 +882,11 @@ export default function Home() {
           </div>
           <Card className="border-0">
             <CardContent className="p-2 sm:p-4">
-              <div className={`w-full overflow-hidden ${isMobile ? 'h-[400px]' : 'h-[600px]'}`}>
+              <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[400px]' : 'h-[600px]'}`}>
                 <Plot
                   data={fertiliserData10s.data as any}
-                  layout={getChartLayout(fertiliserData10s.layout, isMobile) as any}
-                  config={getChartConfig(isMobile)}
+                  layout={getChartLayout(fertiliserData10s.layout, isMobile ?? false) as any}
+                  config={getChartConfig(isMobile ?? false)}
                   style={{ width: '100%', height: '100%' }}
                   useResizeHandler={true}
                   className="w-full h-full"
@@ -1133,8 +1133,8 @@ export default function Home() {
                 <div className={`w-full overflow-hidden ${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
                   <Plot
                     data={summaryData1990.data as any}
-                    layout={getChartLayout(summaryData1990.layout, isMobile) as any}
-                    config={getChartConfig(isMobile)}
+                    layout={getChartLayout(summaryData1990.layout, isMobile ?? false) as any}
+                    config={getChartConfig(isMobile ?? false)}
                     style={{ width: '100%', height: '100%' }}
                     useResizeHandler={true}
                     className="w-full h-full"
@@ -1152,8 +1152,8 @@ export default function Home() {
                 <div className={`w-full overflow-hidden ${isMobile ? 'h-[400px]' : 'h-[500px]'}`}>
                   <Plot
                     data={summaryData2010.data as any}
-                    layout={getChartLayout(summaryData2010.layout, isMobile) as any}
-                    config={getChartConfig(isMobile)}
+                    layout={getChartLayout(summaryData2010.layout, isMobile ?? false) as any}
+                    config={getChartConfig(isMobile ?? false)}
                     style={{ width: '100%', height: '100%' }}
                     useResizeHandler={true}
                     className="w-full h-full"
