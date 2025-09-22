@@ -150,21 +150,32 @@ export default function Home() {
       {/* Hero Section */}
       <section
         id="home"
-        className="flex flex-col items-center justify-center min-h-screen px-4 text-center bg-gradient-to-b from-background to-muted/20"
+        className="relative flex flex-col items-center justify-center min-h-screen px-4 text-center"
+        style={{
+          backgroundImage: `url('/img/farm-bg.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
       >
-        <motion.div
+        {/* Dark overlay for text visibility */}
+        <div className="absolute inset-0 bg-black/50"></div>
+        
+        {/* Content with higher z-index */}
+        <div className="relative z-10">
+          <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="space-y-6"
         >
-          <h1 className="font-serif text-5xl md:text-7xl font-bold text-primary mb-4">
+          <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-4 drop-shadow-lg">
             NPK Impact Explorer
           </h1>
-          <h2 className="text-2xl md:text-3xl text-secondary mb-6">
+          <h2 className="text-2xl md:text-3xl text-white/90 mb-6 drop-shadow-md">
             Understanding Fertilizer&apos;s Role in Agricultural Transformation
           </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto text-center">
+          <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto text-center drop-shadow-sm">
             Explore two decades of data across UK, Asia, and Africa to understand how
             NPK fertilizers have shaped global agriculture.
           </p>
@@ -173,6 +184,7 @@ export default function Home() {
             Scroll to Explore
           </Button>
         </motion.div>
+        </div>
       </section>
 
       {/* Two Decade Analysis Section */}
