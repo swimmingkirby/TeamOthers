@@ -13,10 +13,47 @@ import { Separator } from "../components/ui/separator";
 import { motion } from "framer-motion";
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { ArrowDown, BarChart3, Users, Globe } from "lucide-react";
+import { ArrowDown, BarChart3, Users, Globe, X, Maximize2, Minimize2 } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+  
+  // Lightbox state
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [lightboxAlt, setLightboxAlt] = useState<string>('');
+  
+  // Fullscreen Plotly state
+  const [fullscreenChart, setFullscreenChart] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && fullscreenChart) {
+        setFullscreenChart(null);
+        document.body.style.overflow = 'unset';
+      }
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, [fullscreenChart]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -25,8 +62,84 @@ export default function Home() {
     }
   };
 
+  const openLightbox = (src: string, alt: string) => {
+    setLightboxImage(src);
+    setLightboxAlt(alt);
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+  };
+
+  const closeLightbox = () => {
+    setLightboxImage(null);
+    setLightboxAlt('');
+    document.body.style.overflow = 'unset'; // Restore scrolling
+  };
+
+  const toggleFullscreenChart = async (chartId: string) => {
+    if (fullscreenChart === chartId) {
+      // Exit fullscreen
+      if (document.fullscreenElement) {
+        try {
+          await document.exitFullscreen();
+        } catch (err) {
+          console.log('Error exiting fullscreen:', err);
+        }
+      }
+      setFullscreenChart(null);
+      document.body.style.overflow = 'unset';
+    } else {
+      // Enter fullscreen
+      setFullscreenChart(chartId);
+      document.body.style.overflow = 'hidden';
+      
+      // Try to enter native fullscreen
+      try {
+        const element = document.documentElement;
+        if (element.requestFullscreen) {
+          await element.requestFullscreen();
+        }
+      } catch (err) {
+        console.log('Fullscreen not supported or denied:', err);
+      }
+    }
+  };
+
+  // Helper function to get mobile-friendly chart config
+  const getChartConfig = (mobile: boolean) => ({
+    responsive: true,
+    displayModeBar: !mobile,
+    doubleClick: 'reset' as const,
+    scrollZoom: true
+  } as any);
+
+  // Helper function to get mobile-friendly layout
+  const getChartLayout = (baseLayout: any, mobile: boolean) => ({
+    ...baseLayout,
+    margin: { 
+      t: mobile ? 25 : 50, 
+      r: mobile ? 15 : 20, 
+      b: mobile ? 35 : 60, 
+      l: mobile ? 35 : 60 
+    },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: { size: mobile ? 9 : 12 },
+    autosize: true,
+    width: mobile ? null : baseLayout.width,
+    height: mobile ? 320 : (baseLayout.height || 500),
+    showlegend: mobile ? false : (baseLayout.showlegend !== false),
+    xaxis: {
+      ...baseLayout.xaxis,
+      tickangle: mobile ? -45 : (baseLayout.xaxis?.tickangle || 0),
+      tickfont: { size: mobile ? 8 : 10 }
+    },
+    yaxis: {
+      ...baseLayout.yaxis,
+      tickfont: { size: mobile ? 8 : 10 }
+    }
+  });
+
   return (
-    <main className="min-h-screen bg-background pt-16">
+    <main className="min-h-screen bg-background pt-16 w-full max-w-[100vw] overflow-x-hidden">
       {/* Hero Section */}
       <section
         id="home"
@@ -78,28 +191,33 @@ export default function Home() {
             </p>
           </div>
           <Card className="w-full border-0">
+            <CardHeader className="relative p-4 pb-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="absolute top-4 right-4 z-10"
+                onClick={() => toggleFullscreenChart('two-decade')}
+              >
+                <Maximize2 className="w-4 h-4" />
+              </Button>
+            </CardHeader>
             <CardContent className="p-0">
               <div className="viz-container-primary" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
                   <Plot
                     data={summaryData1990.data as any}
-                    layout={{
-                      ...summaryData1990.layout,
-                      margin: { t: 80, r: 40, b: 80, l: 80 },
-                      paper_bgcolor: 'rgba(0,0,0,0)',
-                      plot_bgcolor: 'rgba(0,0,0,0)',
-                      height: 550
-                    } as any}
-                    config={{ responsive: true, displayModeBar: false }}
+                    layout={getChartLayout(summaryData1990.layout, isMobile) as any}
+                    config={getChartConfig(isMobile)}
                     style={{ width: '100%', height: '100%' }}
+                    useResizeHandler={true}
                   />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Analysis below chart */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          {/* Analysis */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="border-2 border-primary bg-primary text-primary-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-primary-foreground flex items-center gap-2">
@@ -148,22 +266,24 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto justify-center">
+            {/* First 3 team members in normal grid */}
             {/* Team Member 1 - Hamza */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
+              className="w-full max-w-sm mx-auto"
             >
-              <Card className="text-center hover:shadow-lg transition-shadow">
+              <Card className="text-center hover:shadow-lg transition-shadow w-full">
                 <CardContent className="pt-6">
                   <Avatar className="w-32 h-32 mx-auto mb-4">
                     <AvatarImage src="/img/hamza.jpg" alt="Hamza Wahbi" />
                     <AvatarFallback>HW</AvatarFallback>
                   </Avatar>
                   <h3 className="font-serif text-xl font-semibold mb-2">Hamza Wahbi</h3>
-                  <p className="text-muted-foreground mb-4">Data Scientist & Research Lead</p>
+                  <p className="text-muted-foreground mb-4">Software Engineer</p>
                   <Button variant="outline" size="sm" asChild>
                     <a href="https://www.linkedin.com/in/hamzawahbi/" target="_blank" rel="noopener noreferrer">
                       LinkedIn Profile
@@ -179,15 +299,16 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
+              className="w-full max-w-sm mx-auto"
             >
-              <Card className="text-center hover:shadow-lg transition-shadow">
+              <Card className="text-center hover:shadow-lg transition-shadow w-full">
                 <CardContent className="pt-6">
                   <Avatar className="w-32 h-32 mx-auto mb-4">
-                    <AvatarImage src="/api/placeholder/128/128" alt="Furkan T" />
+                    <AvatarImage src="/img/furkan.jpg" alt="Furkan T" />
                     <AvatarFallback>FT</AvatarFallback>
                   </Avatar>
                   <h3 className="font-serif text-xl font-semibold mb-2">Furkan T</h3>
-                  <p className="text-muted-foreground mb-4">Agricultural Systems Analyst</p>
+                  <p className="text-muted-foreground mb-4">Data Scientist</p>
                   <Button variant="outline" size="sm" asChild>
                     <a href="https://www.linkedin.com/in/furkan-t-88926a155/" target="_blank" rel="noopener noreferrer">
                       LinkedIn Profile
@@ -203,15 +324,16 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
+              className="w-full max-w-sm mx-auto"
             >
-              <Card className="text-center hover:shadow-lg transition-shadow">
+              <Card className="text-center hover:shadow-lg transition-shadow w-full">
                 <CardContent className="pt-6">
                   <Avatar className="w-32 h-32 mx-auto mb-4">
                     <AvatarImage src="/img/emma.jpg" alt="Emma Watts" />
                     <AvatarFallback>EW</AvatarFallback>
                   </Avatar>
                   <h3 className="font-serif text-xl font-semibold mb-2">Emma Watts</h3>
-                  <p className="text-muted-foreground mb-4">Environmental Data Specialist</p>
+                  <p className="text-muted-foreground mb-4">Biotechnology PhD Student</p>
                   <Button variant="outline" size="sm" asChild>
                     <a href="https://www.linkedin.com/in/emma-watts-6a449119b/" target="_blank" rel="noopener noreferrer">
                       LinkedIn Profile
@@ -220,22 +342,26 @@ export default function Home() {
                 </CardContent>
               </Card>
             </motion.div>
+          </div>
 
+          {/* Bottom row - centered for the last 2 members */}
+          <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto mt-8">
             {/* Team Member 4 - Akram */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
+              className="w-full max-w-sm"
             >
-              <Card className="text-center hover:shadow-lg transition-shadow">
+              <Card className="text-center hover:shadow-lg transition-shadow w-full">
                 <CardContent className="pt-6">
                   <Avatar className="w-32 h-32 mx-auto mb-4">
                     <AvatarImage src="/img/akram.jpg" alt="Akram Atmani" />
                     <AvatarFallback>AA</AvatarFallback>
                   </Avatar>
                   <h3 className="font-serif text-xl font-semibold mb-2">Akram Atmani</h3>
-                  <p className="text-muted-foreground mb-4">Statistical Modeling Expert</p>
+                  <p className="text-muted-foreground mb-4">UX/UI Designer</p>
                   <Button variant="outline" size="sm" asChild>
                     <a href="https://www.linkedin.com/in/akram-atmani/" target="_blank" rel="noopener noreferrer">
                       LinkedIn Profile
@@ -245,21 +371,23 @@ export default function Home() {
               </Card>
             </motion.div>
 
-            {/* Team Member 5 - Shihan */}
+
+            {/* Team Member 5 - Isabella */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
               viewport={{ once: true }}
+              className="w-full max-w-sm"
             >
-              <Card className="text-center hover:shadow-lg transition-shadow">
+              <Card className="text-center hover:shadow-lg transition-shadow w-full">
                 <CardContent className="pt-6">
                   <Avatar className="w-32 h-32 mx-auto mb-4">
-                    <AvatarImage src="/api/placeholder/128/128" alt="Shihan Zhang" />
-                    <AvatarFallback>SZ</AvatarFallback>
+                    <AvatarImage src="/img/Isabella.jpg" alt="Isabella" />
+                    <AvatarFallback>IB</AvatarFallback>
                   </Avatar>
-                  <h3 className="font-serif text-xl font-semibold mb-2">Shihan Zhang</h3>
-                  <p className="text-muted-foreground mb-4">Data Visualization Specialist</p>
+                  <h3 className="font-serif text-xl font-semibold mb-2">Isabella</h3>
+                  <p className="text-muted-foreground mb-4">Agriculture Scientist</p>
                   <Button variant="outline" size="sm" asChild>
                     <a href="https://www.linkedin.com/in/shihan-zhang-a2749b219/" target="_blank" rel="noopener noreferrer">
                       LinkedIn Profile
@@ -268,29 +396,8 @@ export default function Home() {
                 </CardContent>
               </Card>
             </motion.div>
-
-            {/* Team Member 6 - Isabella */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="pt-6">
-                  <Avatar className="w-32 h-32 mx-auto mb-4">
-                    <AvatarImage src="/img/Isabella.jpg" alt="Isabella" />
-                    <AvatarFallback>IB</AvatarFallback>
-                  </Avatar>
-                  <h3 className="font-serif text-xl font-semibold mb-2">Isabella</h3>
-                  <p className="text-muted-foreground mb-4">Research Assistant</p>
-                  <Button variant="outline" size="sm" disabled>
-                    LinkedIn Coming Soon
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
           </div>
+
         </div>
       </motion.section>
 
@@ -329,23 +436,26 @@ export default function Home() {
               viewport={{ once: true }}
             >
               <Card className="border-0">
-                <CardHeader className="pb-2">
+                <CardHeader className="relative pb-2">
                   <CardTitle className="font-serif">Fertiliser Usage Over Time</CardTitle>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="absolute top-2 right-2 z-10"
+                    onClick={() => toggleFullscreenChart('fertiliser-usage')}
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                  </Button>
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="viz-container-secondary" style={{ height: '500px' }}>
                     <div className="viz-inner-wrapper" style={{ height: '500px' }}>
                       <Plot
                         data={fertiliserData90s.data as any}
-                        layout={{
-                          ...fertiliserData90s.layout,
-                          margin: { t: 80, r: 40, b: 80, l: 80 },
-                          paper_bgcolor: 'rgba(0,0,0,0)',
-                          plot_bgcolor: 'rgba(0,0,0,0)',
-                          height: 450
-                        } as any}
-                        config={{ responsive: true, displayModeBar: false }}
+                        layout={getChartLayout(fertiliserData90s.layout, isMobile) as any}
+                        config={getChartConfig(isMobile)}
                         style={{ width: '100%', height: '100%' }}
+                        useResizeHandler={true}
                       />
                     </div>
                   </div>
@@ -381,14 +491,22 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="p-4">
                   <div className="w-full flex justify-center">
-                    <Image 
-                      src="/img/correlation-grain-straw-insect.png" 
-                      alt="Correlation heatmap showing relationships between grain/straw production and insect species populations comparing 1990-2000 vs 2010-2020"
-                      width={800}
-                      height={400}
-                      className="max-w-full h-auto rounded-lg shadow-lg"
-                      style={{ maxHeight: '600px' }}
-                    />
+                    <div 
+                      className="relative group cursor-pointer"
+                      onClick={() => openLightbox("/img/correlation-grainstraw-vs-insec-species.jpg", "Correlation heatmap showing relationships between grain/straw production and insect species populations comparing 1990-2000 vs 2010-2020")}
+                    >
+                      <Image 
+                        src="/img/correlation-grainstraw-vs-insec-species.jpg" 
+                        alt="Correlation heatmap showing relationships between grain/straw production and insect species populations comparing 1990-2000 vs 2010-2020"
+                        width={800}
+                        height={400}
+                        className="max-w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                        style={{ maxHeight: '600px' }}
+                      />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition-all duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="text-white font-medium text-lg">Click to enlarge</span>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -435,14 +553,22 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="p-4">
                   <div className="w-full flex justify-center">
-                    <Image 
-                      src="/img/strip8-decade-comparison.png" 
-                      alt="Box plot comparison showing grain yield, straw yield, summer rainfall, and summer temperature for Strip 8 comparing 1990-2000 vs 2010-2020 periods"
-                      width={1000}
-                      height={400}
-                      className="max-w-full h-auto rounded-lg shadow-lg"
-                      style={{ maxHeight: '500px' }}
-                    />
+                    <div 
+                      className="relative group cursor-pointer"
+                      onClick={() => openLightbox("/img/strip-8-comparison.jpg", "Box plot comparison showing grain yield, straw yield, summer rainfall, and summer temperature for Strip 8 comparing 1990-2000 vs 2010-2020 periods")}
+                    >
+                      <Image 
+                        src="/img/strip-8-comparison.jpg" 
+                        alt="Box plot comparison showing grain yield, straw yield, summer rainfall, and summer temperature for Strip 8 comparing 1990-2000 vs 2010-2020 periods"
+                        width={1000}
+                        height={400}
+                        className="max-w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                        style={{ maxHeight: '500px' }}
+                      />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition-all duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="text-white font-medium text-lg">Click to enlarge</span>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -484,24 +610,51 @@ export default function Home() {
                 <CardHeader className="pb-2">
                   <CardTitle className="font-serif">Weather Patterns</CardTitle>
                 </CardHeader>
-                <CardContent className="p-0">
-                  <div className="viz-container-primary" style={{ height: '500px' }}>
-                    <div className="viz-inner-wrapper" style={{ height: '500px' }}>
-                      <Plot
-                        data={summaryData2010.data as any}
-                        layout={{
-                          ...summaryData2010.layout,
-                          margin: { t: 80, r: 40, b: 80, l: 80 },
-                          paper_bgcolor: 'rgba(0,0,0,0)',
-                          plot_bgcolor: 'rgba(0,0,0,0)',
-                          height: 450
-                        } as any}
-                        config={{ responsive: true, displayModeBar: false }}
-                        style={{ width: '100%', height: '100%' }}
-                      />
-                    </div>
-                  </div>
-                </CardContent>
+                 <CardContent className="p-4">
+                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                     {/* Rainfall Patterns */}
+                     <div className="w-full flex flex-col items-center">
+                       <h4 className="font-serif text-lg font-semibold mb-4 text-center">Rainfall Patterns (1853-2024)</h4>
+                       <div 
+                         className="relative group cursor-pointer"
+                         onClick={() => openLightbox("/img/01-fig-rain-1853-2024.png", "Rainfall patterns from 1853 to 2024 showing long-term trends and variability in precipitation")}
+                       >
+                         <Image 
+                           src="/img/01-fig-rain-1853-2024.png" 
+                           alt="Rainfall patterns from 1853 to 2024 showing long-term trends and variability in precipitation"
+                           width={600}
+                           height={400}
+                           className="max-w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                           style={{ maxHeight: '400px' }}
+                         />
+                         <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition-all duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                           <span className="text-white font-medium text-lg">Click to enlarge</span>
+                         </div>
+                       </div>
+                     </div>
+                     
+                     {/* Sunshine Patterns */}
+                     <div className="w-full flex flex-col items-center">
+                       <h4 className="font-serif text-lg font-semibold mb-4 text-center">Sunshine Patterns (1891-2024)</h4>
+                       <div 
+                         className="relative group cursor-pointer"
+                         onClick={() => openLightbox("/img/01-fig-sun-1891-2024.png", "Sunshine patterns from 1891 to 2024 showing long-term trends and variability in solar radiation")}
+                       >
+                         <Image 
+                           src="/img/01-fig-sun-1891-2024.png" 
+                           alt="Sunshine patterns from 1891 to 2024 showing long-term trends and variability in solar radiation"
+                           width={600}
+                           height={400}
+                           className="max-w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                           style={{ maxHeight: '400px' }}
+                         />
+                         <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition-all duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                           <span className="text-white font-medium text-lg">Click to enlarge</span>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 </CardContent>
               </Card>
 
               {/* Climate insights below chart */}
@@ -533,14 +686,22 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="p-4">
                   <div className="w-full flex justify-center">
-                    <Image 
-                      src="/img/yearly-aphid-abundance.png" 
-                      alt="Bar chart showing yearly abundance of three aphid species - Metopolophium dirhodum (Rose-grain aphid), Rhopalosiphum padi (Bird cherry-oat aphid), and Sitobion avenae (English grain aphid) from 1990 to 2020"
-                      width={1200}
-                      height={500}
-                      className="max-w-full h-auto rounded-lg shadow-lg"
-                      style={{ maxHeight: '600px' }}
-                    />
+                    <div 
+                      className="relative group cursor-pointer"
+                      onClick={() => openLightbox("/img/Yearly-abundance-of-aphids.jpg", "Bar chart showing yearly abundance of three aphid species - Metopolophium dirhodum (Rose-grain aphid), Rhopalosiphum padi (Bird cherry-oat aphid), and Sitobion avenae (English grain aphid) from 1990 to 2020")}
+                    >
+                      <Image 
+                        src="/img/Yearly-abundance-of-aphids.jpg" 
+                        alt="Bar chart showing yearly abundance of three aphid species - Metopolophium dirhodum (Rose-grain aphid), Rhopalosiphum padi (Bird cherry-oat aphid), and Sitobion avenae (English grain aphid) from 1990 to 2020"
+                        width={1200}
+                        height={500}
+                        className="max-w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                        style={{ maxHeight: '600px' }}
+                      />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition-all duration-300 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="text-white font-medium text-lg">Click to enlarge</span>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -567,16 +728,6 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <Card className="border-0">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-serif">Decade Comparisons</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="viz-container-accent flex items-center justify-center bg-muted/20" style={{ height: '400px' }}>
-                  <p className="text-muted-foreground">Comparison Chart Placeholder</p>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </motion.section>
@@ -605,24 +756,19 @@ export default function Home() {
               <div className="viz-container-accent" style={{ height: '600px' }}>
                 <div className="viz-inner-wrapper" style={{ height: '600px' }}>
                   <Plot
-                    data={summaryData2010.data as any}
-                    layout={{
-                      ...summaryData2010.layout,
-                      margin: { t: 80, r: 40, b: 80, l: 80 },
-                      paper_bgcolor: 'rgba(0,0,0,0)',
-                      plot_bgcolor: 'rgba(0,0,0,0)',
-                      height: 550
-                    } as any}
-                    config={{ responsive: true, displayModeBar: false }}
+                    data={fertiliserData10s.data as any}
+                    layout={getChartLayout(fertiliserData10s.layout, isMobile) as any}
+                    config={getChartConfig(isMobile)}
                     style={{ width: '100%', height: '100%' }}
+                    useResizeHandler={true}
                   />
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Analysis below chart */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+          {/* Analysis */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card className="border-2 border-accent bg-accent text-accent-foreground">
               <CardHeader className="pb-2">
                 <CardTitle className="font-serif text-accent-foreground">Efficiency Gains</CardTitle>
@@ -703,9 +849,9 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Asia Section */}
+      {/* Global Case Studies Section */}
       <motion.section
-        id="asia"
+        id="global-case-studies"
         className="min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-muted/10"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -713,123 +859,66 @@ export default function Home() {
         viewport={{ once: true, margin: "-100px" }}
       >
         <div className="max-w-6xl mx-auto w-full space-y-8">
-          <div
-            className="text-center space-y-4"
-          >
-            <Badge variant="secondary" className="text-lg px-4 py-2">Asia Case Study</Badge>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
-              Asia (Rice Case Study)
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
-              This case study examines rice production in Asia, showing changes in yield over time and comparisons across decades.
-            </p>
-          </div>
-          <Card className="border-0">
-            <CardContent className="p-0">
-              <div className="viz-container-primary" style={{ height: '600px' }}>
-                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot
-                    data={summaryData1990.data as any}
-                    layout={{
-                      ...summaryData1990.layout,
-                      margin: { t: 80, r: 40, b: 80, l: 80 },
-                      paper_bgcolor: 'rgba(0,0,0,0)',
-                      plot_bgcolor: 'rgba(0,0,0,0)',
-                      height: 550
-                    } as any}
-                    config={{ responsive: true, displayModeBar: false }}
-                    style={{ width: '100%', height: '100%' }}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Analysis below chart */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <Card className="border-2 border-primary bg-primary text-primary-foreground">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-serif text-primary-foreground">🌾 Rice Revolution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-primary-foreground text-sm">Asia's rice production shows steady growth from 1990-2020, with fertilizer optimization playing a crucial role in feeding the world's largest population.</p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-serif text-secondary-foreground">Green Revolution Impact</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-secondary-foreground text-sm">Modern rice varieties combined with balanced NPK fertilization have increased yields while adapting to changing climate conditions.</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Africa Section */}
-      <motion.section
-        id="africa"
-        className="min-h-screen flex flex-col items-center justify-center px-4 py-16"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true, margin: "-100px" }}
-      >
-        <div className="max-w-6xl mx-auto w-full space-y-8">
           <div className="text-center space-y-4">
-            <Badge variant="secondary" className="text-lg px-4 py-2">Africa Case Study</Badge>
+            <Badge variant="secondary" className="text-lg px-4 py-2">Global Case Studies</Badge>
             <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
-              Africa (Maize Case Study)
+              Asia & Africa Case Studies
             </h2>
             <p className="text-lg text-muted-foreground max-w-4xl mx-auto">
-              This case study examines maize production in Africa, showing changes in yield over time and comparisons across decades.
+              Examining rice production in Asia and maize production in Africa, showcasing global applications of NPK fertilization strategies across different crops and regions.
             </p>
           </div>
-          <Card className="border-0">
-            <CardContent className="p-0">
-              <div className="viz-container-secondary" style={{ height: '600px' }}>
-                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot
-                    data={summaryData2010.data as any}
-                    layout={{
-                      ...summaryData2010.layout,
-                      margin: { t: 80, r: 40, b: 80, l: 80 },
-                      paper_bgcolor: 'rgba(0,0,0,0)',
-                      plot_bgcolor: 'rgba(0,0,0,0)',
-                      height: 550
-                    } as any}
-                    config={{ responsive: true, displayModeBar: false }}
-                    style={{ width: '100%', height: '100%' }}
-                  />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          {/* Analysis below chart */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-serif text-secondary-foreground">🌽 Maize Potential</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-secondary-foreground text-sm">Africa's maize production shows significant potential for growth with proper fertilizer management and improved agricultural practices.</p>
-              </CardContent>
-            </Card>
+          {/* Asia Case Study */}
+          <div className="space-y-6">
+            <h3 className="font-serif text-2xl font-semibold text-center">Asia (Rice Case Study)</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-2 border-primary bg-primary text-primary-foreground">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif text-primary-foreground">🌾 Rice Revolution</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-primary-foreground text-sm">Asia's rice production shows steady growth from 1990-2020, with fertilizer optimization playing a crucial role in feeding the world's largest population.</p>
+                </CardContent>
+              </Card>
 
-            <Card className="border-2 border-accent bg-accent text-accent-foreground">
-              <CardHeader className="pb-2">
-                <CardTitle className="font-serif text-accent-foreground">Food Security Focus</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-accent-foreground text-sm">Strategic NPK fertilization can help address food security challenges while building sustainable agricultural systems across the continent.</p>
-              </CardContent>
-            </Card>
+              <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif text-secondary-foreground">Green Revolution Impact</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-secondary-foreground text-sm">Modern rice varieties combined with balanced NPK fertilization have increased yields while adapting to changing climate conditions.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Africa Case Study */}
+          <div className="space-y-6">
+            <h3 className="font-serif text-2xl font-semibold text-center">Africa (Maize Case Study)</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif text-secondary-foreground">🌽 Maize Potential</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-secondary-foreground text-sm">Africa's maize production shows significant potential for growth with proper fertilizer management and improved agricultural practices.</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-2 border-accent bg-accent text-accent-foreground">
+                <CardHeader className="pb-2">
+                  <CardTitle className="font-serif text-accent-foreground">Food Security Focus</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-accent-foreground text-sm">Strategic NPK fertilization can help address food security challenges while building sustainable agricultural systems across the continent.</p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </motion.section>
+
 
       {/* Future Pathways Section */}
       <motion.section
@@ -906,26 +995,47 @@ export default function Home() {
               This section summarizes the key findings from the two-decade analysis, highlighting trends in fertilizer use, yields, and overall efficiency.
             </p>
           </div>
-          <Card className="border-0">
-            <CardContent className="p-0">
-              <div className="viz-container-accent" style={{ height: '600px' }}>
-                <div className="viz-inner-wrapper" style={{ height: '600px' }}>
-                  <Plot
-                    data={fertiliserData90s.data as any}
-                    layout={{
-                      ...fertiliserData90s.layout,
-                      margin: { t: 80, r: 40, b: 80, l: 80 },
-                      paper_bgcolor: 'rgba(0,0,0,0)',
-                      plot_bgcolor: 'rgba(0,0,0,0)',
-                      height: 550
-                    } as any}
-                    config={{ responsive: true, displayModeBar: false }}
-                    style={{ width: '100%', height: '100%' }}
-                  />
+          <div className="space-y-8">
+            {/* 1990s Summary */}
+            <Card className="border-0">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-center">1990-2000 Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="viz-container-primary" style={{ height: '500px' }}>
+                  <div className="viz-inner-wrapper" style={{ height: '500px' }}>
+                    <Plot
+                      data={summaryData1990.data as any}
+                      layout={getChartLayout(summaryData1990.layout, isMobile) as any}
+                      config={getChartConfig(isMobile)}
+                      style={{ width: '100%', height: '100%' }}
+                      useResizeHandler={true}
+                    />
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            {/* 2010s Summary */}
+            <Card className="border-0">
+              <CardHeader className="pb-2">
+                <CardTitle className="font-serif text-center">2010-2020 Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="viz-container-secondary" style={{ height: '500px' }}>
+                  <div className="viz-inner-wrapper" style={{ height: '500px' }}>
+                    <Plot
+                      data={summaryData2010.data as any}
+                      layout={getChartLayout(summaryData2010.layout, isMobile) as any}
+                      config={getChartConfig(isMobile)}
+                      style={{ width: '100%', height: '100%' }}
+                      useResizeHandler={true}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Key findings below chart */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
@@ -982,35 +1092,35 @@ export default function Home() {
                   📊 Agricultural Data Sources
                 </CardTitle>
                 <CardDescription>
-                  Comprehensive datasets used in this analysis
+                  Datasets from Rothamsted Research Long-term Experiments used in this analysis
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-1" className="border-b border-border">
                     <AccordionTrigger className="text-left font-serif hover:no-underline">
-                      UK Agricultural Statistics - DEFRA
+                      Rothamsted Long-term Experiments - Weather Data
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground">
-                      Department for Environment, Food and Rural Affairs. UK winter barley production data, fertilizer usage statistics, and yield measurements from 1990-2020. Published annually in the Agricultural Statistics bulletin.
+                      Electronic Rothamsted Archive (e-RA). Temperature, rainfall, and sunshine data from Rothamsted Research long-term experiments. Including monthly and annual data from 1853-2024. Available at: <a href="https://www.era.rothamsted.ac.uk/info/datasets" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.era.rothamsted.ac.uk/info/datasets</a>
                     </AccordionContent>
                   </AccordionItem>
 
                   <AccordionItem value="item-2" className="border-b border-border">
                     <AccordionTrigger className="text-left font-serif hover:no-underline">
-                      FAO Global Rice Production Database
+                      Broadbalk Wheat Experiment - Hoosfield Barley
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground">
-                      Food and Agriculture Organization of the United Nations. Rice production statistics for Asian countries, including yield per hectare, fertilizer application rates, and climate data. FAOSTAT database, accessed 2025.
+                      Rothamsted Research. Long-term agricultural yield and fertilizer data from the world's longest-running agricultural experiments. Crop yields, nutrient data, and fertilizer treatments from 1852 onwards. Electronic Rothamsted Archive.
                     </AccordionContent>
                   </AccordionItem>
 
                   <AccordionItem value="item-3" className="border-b border-border">
                     <AccordionTrigger className="text-left font-serif hover:no-underline">
-                      African Maize Production Analysis - CGIAR
+                      Rothamsted Insect Survey Data
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground">
-                      Consultative Group for International Agricultural Research. Comprehensive dataset on maize production across Sub-Saharan Africa, including fertilizer usage patterns and yield variations from 1990-2020.
+                      Rothamsted Research Insect Survey (RIS). Long-term aphid monitoring data including Rhopalosiphum padi, Metopolophium dirhodum, and Sitobion avenae populations from 1990-2020. Available through the Electronic Rothamsted Archive.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -1074,11 +1184,113 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <Separator className="mb-6 bg-primary-foreground/20" />
           <div className="text-center space-y-4">
-            <p className="text-primary-foreground/80">Data sourced from various agricultural databases and research institutions.</p>
+            <p className="text-primary-foreground/80">Data sourced from the Electronic Rothamsted Archive (e-RA) - Rothamsted Research Long-term Experiments.</p>
             <p className="text-sm text-primary-foreground/60">© 2025 Team Others. All rights reserved.</p>
           </div>
         </div>
       </footer>
+
+      {/* Lightbox Modal */}
+      {lightboxImage && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={closeLightbox}
+        >
+          <div className="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center">
+            <button
+              onClick={closeLightbox}
+              className="absolute top-4 right-4 z-60 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition-all duration-200"
+              aria-label="Close lightbox"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+            <Image
+              src={lightboxImage}
+              alt={lightboxAlt}
+              width={1200}
+              height={800}
+              className="max-w-full max-h-full object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Fullscreen Chart Modal */}
+      {fullscreenChart && (
+        <div 
+          className="fixed inset-0 bg-background z-[9999] w-screen h-screen overflow-hidden"
+          style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}
+          onClick={() => toggleFullscreenChart(fullscreenChart)}
+        >
+          <div className="relative w-full h-full flex flex-col">
+            <div className="absolute top-4 right-4 z-[10000] flex gap-2">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFullscreenChart(fullscreenChart);
+                }}
+                className="bg-primary text-primary-foreground rounded-lg px-3 py-2 transition-all duration-200 hover:bg-primary/80 shadow-lg"
+                aria-label="Exit fullscreen"
+              >
+                <X className="w-5 h-5 inline mr-2" />
+                Exit Fullscreen
+              </button>
+            </div>
+            <div 
+              className="flex-1 w-full h-full overflow-hidden"
+              style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {fullscreenChart === 'two-decade' && (
+                <Plot
+                  data={summaryData1990.data as any}
+                  layout={{
+                    ...summaryData1990.layout,
+                    margin: { t: 80, r: 60, b: 80, l: 80 },
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: { size: 16 },
+                    autosize: true
+                  } as any}
+                  config={{ 
+                    responsive: true, 
+                    displayModeBar: true,
+                    doubleClick: 'reset',
+                    scrollZoom: true,
+                    displaylogo: false
+                  } as any}
+                  style={{ width: '100%', height: '100%', maxWidth: '100vw' }}
+                  useResizeHandler={true}
+                />
+              )}
+              
+              {fullscreenChart === 'fertiliser-usage' && (
+                <Plot
+                  data={fertiliserData90s.data as any}
+                  layout={{
+                    ...fertiliserData90s.layout,
+                    margin: { t: 80, r: 60, b: 80, l: 80 },
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: { size: 16 },
+                    autosize: true
+                  } as any}
+                  config={{ 
+                    responsive: true, 
+                    displayModeBar: true,
+                    doubleClick: 'reset',
+                    scrollZoom: true,
+                    displaylogo: false
+                  } as any}
+                  style={{ width: '100%', height: '100%', maxWidth: '100vw' }}
+                  useResizeHandler={true}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

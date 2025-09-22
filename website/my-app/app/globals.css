@@ -61,8 +61,17 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
   body {
     @apply bg-background text-foreground font-sans;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
   
   /* Set serif font for all headings by default */
@@ -109,12 +118,49 @@
 
   /* Inner wrapper for proper spacing */
   .viz-inner-wrapper {
-    padding: 16px;
-    height: 400px;
+    padding: 8px;
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 400px; /* Ensure minimum height */
+    min-height: 300px; /* Mobile minimum height */
+    width: 100%;
+  }
+
+  /* Mobile-specific styling */
+  @media (max-width: 767px) {
+    .viz-inner-wrapper {
+      padding: 8px;
+      height: 350px;
+      min-height: 350px;
+      width: 100%;
+    }
+    
+    .viz-container-primary,
+    .viz-container-secondary,
+    .viz-container-accent {
+      min-height: 350px;
+      width: 100%;
+      max-width: 100vw;
+    }
+    
+    /* Force Plotly charts to be responsive on mobile */
+    .viz-container-primary .js-plotly-plot,
+    .viz-container-secondary .js-plotly-plot,
+    .viz-container-accent .js-plotly-plot {
+      width: 100% !important;
+      height: 100% !important;
+      min-width: 100% !important;
+    }
+    
+    /* Ensure plotly svg elements resize properly */
+    .viz-container-primary svg,
+    .viz-container-secondary svg,
+    .viz-container-accent svg {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 100% !important;
+    }
   }
 
   /* Enhanced containers for larger charts */
@@ -129,6 +175,21 @@
   /* Responsive chart sizing */
   @media (min-width: 768px) {
     .viz-inner-wrapper {
+      padding: 12px;
+      height: 400px;
+      min-height: 400px;
+    }
+    
+    .viz-container-primary,
+    .viz-container-secondary,
+    .viz-container-accent {
+      min-height: 400px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .viz-inner-wrapper {
+      padding: 16px;
       height: 500px;
       min-height: 500px;
     }
@@ -140,31 +201,44 @@
     }
   }
 
-  @media (min-width: 1024px) {
-    .viz-inner-wrapper {
-      height: 600px;
-      min-height: 600px;
-    }
-    
-    .viz-container-primary,
-    .viz-container-secondary,
-    .viz-container-accent {
-      min-height: 600px;
-    }
-  }
-
   /* Plotly chart containers - remove all internal spacing */
   .viz-container-primary .js-plotly-plot,
   .viz-container-secondary .js-plotly-plot,
   .viz-container-accent .js-plotly-plot {
     margin: 0 !important;
     padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
-  /* Ensure plotly charts fill container completely */
+  /* Ensure plotly charts fill container completely and are centered */
   .viz-container-primary .plotly,
   .viz-container-secondary .plotly,
   .viz-container-accent .plotly {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Center the actual plotly graph element */
+  .viz-container-primary .plotly .main-svg,
+  .viz-container-secondary .plotly .main-svg,
+  .viz-container-accent .plotly .main-svg {
+    margin: 0 auto !important;
+  }
+
+  /* Additional centering for plotly wrapper divs */
+  .viz-container-primary > div,
+  .viz-container-secondary > div,
+  .viz-container-accent > div {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 100% !important;
     height: 100% !important;
   }
@@ -172,5 +246,85 @@
   /* Remove all rounded corners globally */
   * {
     border-radius: 0 !important;
+  }
+
+  /* Mobile width fixes */
+  @media (max-width: 767px) {
+    .max-w-7xl, .max-w-6xl, .max-w-4xl, .max-w-3xl, .max-w-2xl {
+      max-width: 100% !important;
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+    
+    /* Ensure all containers don't overflow */
+    .container, main, section, div {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    
+    /* Fix section padding for mobile */
+    section {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+    
+    /* Fix motion sections */
+    .min-h-screen {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+    
+    /* Fix any potential text overflow */
+    h1, h2, h3, h4, h5, h6, p {
+      word-wrap: break-word;
+      word-break: break-word;
+      hyphens: auto;
+      max-width: 100%;
+    }
+    
+    /* Responsive font sizes */
+    h1 {
+      font-size: 2.5rem !important;
+      line-height: 1.2 !important;
+    }
+    
+    h2 {
+      font-size: 2rem !important;
+      line-height: 1.3 !important;
+    }
+    
+    /* Ensure images are responsive */
+    img {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    
+    /* Fix table overflow */
+    table {
+      width: 100% !important;
+      table-layout: fixed !important;
+    }
+    
+    /* Ensure cards and grid elements are responsive */
+    .grid {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+    
+    /* Fix card padding */
+    .p-4 {
+      padding: 0.75rem !important;
+    }
+    
+    .px-4 {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+    
+    /* Ensure buttons are touch-friendly */
+    button {
+      min-height: 44px;
+      min-width: 44px;
+    }
   }
 }
