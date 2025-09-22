@@ -1,9 +1,9 @@
 'use client';
 
-import summaryData1990 from "../../plotly-json/1_SummaryPlot_1990.json";
-import summaryData2010 from "../../plotly-json/1_SummaryPlot_2010.json";
-import fertiliserData90s from '../../plotly-json/4_FertiliserUse_90s.json';
-import fertiliserData10s from '../../plotly-json/4_FertiliserUse_10s.json';
+import summaryData1990 from "./data/1_SummaryPlot_1990.json";
+import summaryData2010 from "./data/1_SummaryPlot_2010.json";
+import fertiliserData90s from './data/4_FertiliserUse_90s.json';
+import fertiliserData10s from './data/4_FertiliserUse_10s.json';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
@@ -13,7 +13,7 @@ import { Separator } from "../components/ui/separator";
 import { motion } from "framer-motion";
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-import { ArrowDown, BarChart3, Users, Globe, X, Maximize2, Minimize2 } from "lucide-react";
+import { ArrowDown, BarChart3, Users, Globe, X, Maximize2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -109,10 +109,17 @@ export default function Home() {
     displayModeBar: !mobile,
     doubleClick: 'reset' as const,
     scrollZoom: true
-  } as any);
+  });
 
   // Helper function to get mobile-friendly layout
-  const getChartLayout = (baseLayout: any, mobile: boolean) => ({
+  const getChartLayout = (baseLayout: {
+    width?: number;
+    height?: number;
+    showlegend?: boolean;
+    xaxis?: Record<string, unknown>;
+    yaxis?: Record<string, unknown>;
+    [key: string]: unknown;
+  }, mobile: boolean) => ({
     ...baseLayout,
     margin: { 
       t: mobile ? 25 : 50, 
@@ -128,12 +135,12 @@ export default function Home() {
     height: mobile ? 320 : (baseLayout.height || 500),
     showlegend: mobile ? false : (baseLayout.showlegend !== false),
     xaxis: {
-      ...baseLayout.xaxis,
-      tickangle: mobile ? -45 : (baseLayout.xaxis?.tickangle || 0),
+      ...(baseLayout.xaxis || {}),
+      tickangle: mobile ? -45 : ((baseLayout.xaxis as any)?.tickangle || 0),
       tickfont: { size: mobile ? 8 : 10 }
     },
     yaxis: {
-      ...baseLayout.yaxis,
+      ...(baseLayout.yaxis || {}),
       tickfont: { size: mobile ? 8 : 10 }
     }
   });
@@ -878,7 +885,7 @@ export default function Home() {
                   <CardTitle className="font-serif text-primary-foreground">🌾 Rice Revolution</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-primary-foreground text-sm">Asia's rice production shows steady growth from 1990-2020, with fertilizer optimization playing a crucial role in feeding the world's largest population.</p>
+                  <p className="text-primary-foreground text-sm">Asia&apos;s rice production shows steady growth from 1990-2020, with fertilizer optimization playing a crucial role in feeding the world&apos;s largest population.</p>
                 </CardContent>
               </Card>
 
@@ -902,7 +909,7 @@ export default function Home() {
                   <CardTitle className="font-serif text-secondary-foreground">🌽 Maize Potential</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-secondary-foreground text-sm">Africa's maize production shows significant potential for growth with proper fertilizer management and improved agricultural practices.</p>
+                  <p className="text-secondary-foreground text-sm">Africa&apos;s maize production shows significant potential for growth with proper fertilizer management and improved agricultural practices.</p>
                 </CardContent>
               </Card>
 
@@ -1111,7 +1118,7 @@ export default function Home() {
                       Broadbalk Wheat Experiment - Hoosfield Barley
                     </AccordionTrigger>
                     <AccordionContent className="text-muted-foreground">
-                      Rothamsted Research. Long-term agricultural yield and fertilizer data from the world's longest-running agricultural experiments. Crop yields, nutrient data, and fertilizer treatments from 1852 onwards. Electronic Rothamsted Archive.
+                      Rothamsted Research. Long-term agricultural yield and fertilizer data from the world&apos;s longest-running agricultural experiments. Crop yields, nutrient data, and fertilizer treatments from 1852 onwards. Electronic Rothamsted Archive.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -1259,7 +1266,7 @@ export default function Home() {
                     doubleClick: 'reset',
                     scrollZoom: true,
                     displaylogo: false
-                  } as any}
+                  }}
                   style={{ width: '100%', height: '100%', maxWidth: '100vw' }}
                   useResizeHandler={true}
                 />
@@ -1282,7 +1289,7 @@ export default function Home() {
                     doubleClick: 'reset',
                     scrollZoom: true,
                     displaylogo: false
-                  } as any}
+                  } }
                   style={{ width: '100%', height: '100%', maxWidth: '100vw' }}
                   useResizeHandler={true}
                 />
