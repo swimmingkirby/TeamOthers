@@ -248,6 +248,54 @@
     border-radius: 0 !important;
   }
 
+  /* Hero section background image - desktop only */
+  .hero-bg-desktop {
+    /* No background on mobile by default */
+    background-color: hsl(var(--background));
+  }
+  
+  /* Only load background image on desktop screens (768px and up) */
+  @media (min-width: 768px) {
+    .hero-bg-desktop {
+      background-image: url('/img/farm-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+  }
+  
+  /* Hero overlay - only visible on desktop */
+  .hero-overlay {
+    display: none;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-overlay {
+      display: block;
+    }
+  }
+  
+  /* Hero text colors - responsive */
+  .hero-text-mobile {
+    color: hsl(var(--primary));
+  }
+  
+  .hero-subtext-mobile {
+    color: hsl(var(--muted-foreground));
+  }
+  
+  @media (min-width: 768px) {
+    .hero-text-mobile {
+      color: white;
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+    
+    .hero-subtext-mobile {
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+  }
+
   /* Mobile width fixes */
   @media (max-width: 767px) {
     .max-w-7xl, .max-w-6xl, .max-w-4xl, .max-w-3xl, .max-w-2xl {

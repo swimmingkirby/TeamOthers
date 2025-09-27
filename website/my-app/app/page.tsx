@@ -164,7 +164,7 @@ export default function Home() {
     responsive: true,
     displayModeBar: !mobile,
     doubleClick: 'reset' as const,
-    scrollZoom: !mobile,
+    scrollZoom: false,
     displaylogo: false,
     modeBarButtonsToRemove: mobile ? ['zoom2d', 'pan2d', 'select2d', 'lasso2d', 'autoScale2d'] as any : [],
     showTips: !mobile
@@ -234,18 +234,10 @@ export default function Home() {
       {/* Hero Section */}
       <section
         id="home"
-        className={`relative flex flex-col items-center justify-center min-h-screen text-center ${
-          isMobile === null ? 'bg-white' : isMobile ? 'bg-white' : ''
-        }`}
-        style={isMobile === null ? {} : isMobile ? {} : {
-          backgroundImage: `url('/img/farm-bg.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
+        className="relative flex flex-col items-center justify-center min-h-screen text-center hero-bg-desktop"
       >
         {/* Dark overlay for text visibility - only on desktop */}
-        {isMobile === false && <div className="absolute inset-0 bg-black/50"></div>}
+        <div className="absolute inset-0 bg-black/50 hero-overlay"></div>
         
         {/* Content with higher z-index */}
         <div className="relative z-10 w-full max-w-5xl mx-auto sm:px-4">
@@ -255,30 +247,17 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="space-y-4 sm:space-y-6"
         >
-          <h1 className={`font-serif font-bold mb-2 sm:mb-4 leading-tight ${
-            isMobile === null || isMobile
-              ? 'text-2xl text-primary' 
-              : 'text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-white drop-shadow-lg'
-          }`}>
+          <h1 className="font-serif font-bold mb-2 sm:mb-4 leading-tight text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl hero-text-mobile">
             NPK Impact Explorer
           </h1>
-          <h2 className={`mb-4 sm:mb-6 leading-relaxed ${
-            isMobile === null || isMobile
-              ? 'text-base text-muted-foreground' 
-              : 'text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 drop-shadow-md'
-          }`}>
+          <h2 className="mb-4 sm:mb-6 leading-relaxed text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl hero-subtext-mobile">
             Understanding Fertilizer&apos;s Role in Agricultural Transformation
           </h2>
-          <p className={`mb-6 sm:mb-8 max-w-3xl mx-auto text-center leading-relaxed ${
-            isMobile === null || isMobile
-              ? 'text-sm text-muted-foreground' 
-              : 'text-sm sm:text-base md:text-lg text-white/80 drop-shadow-sm'
-          }`}>
-            Explore two decades of data across UK, Asia, and Africa to understand how
-            NPK fertilizers have shaped global agriculture.
+          <p className="mb-6 sm:mb-8 max-w-3xl mx-auto text-center leading-relaxed text-sm sm:text-base md:text-lg hero-subtext-mobile">
+            Explore a case study in Rothamsted to understand how NPK fertilizers, insect prevalence, and meteorological changes have shaped crop yield.
           </p>
           <Button 
-            size={isMobile === null || isMobile ? "default" : "lg"} 
+            size="lg" 
             className="gap-2" 
             onClick={() => scrollToSection('two-decade')}
             variant="default"
@@ -313,51 +292,82 @@ export default function Home() {
               This section compares agricultural data from the 1990s and 2010s, highlighting key changes in fertilizer usage, yields, weather patterns, and insect populations across different regions.
             </p>
           </div>
-          <Card className="w-full border-0">
-            <CardHeader className="relative p-4 pb-2">
-              <Button
-                variant="outline"
-                size="sm"
-                className="absolute top-4 right-4 z-10"
-                onClick={() => toggleFullscreenChart('two-decade')}
-              >
-                <Maximize2 className="w-4 h-4" />
-              </Button>
-            </CardHeader>
-            <CardContent className="p-2 sm:p-4">
-              <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[400px]' : 'h-[600px]'}`}>
-                <Plot
-                  data={summaryData1990.data as any}
-                  layout={getChartLayout(summaryData1990.layout, isMobile ?? false) as any}
-                  config={getChartConfig(isMobile ?? false)}
-                  style={{ width: '100%', height: '100%' }}
-                  useResizeHandler={true}
-                  className="w-full h-full"
-                />
-              </div>
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            {/* 1990-2000 Plot */}
+            <Card className="w-full border-0">
+              <CardHeader className="relative p-4 pb-2">
+                <CardTitle className="font-serif text-center text-lg">1990-2000</CardTitle>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="absolute top-4 right-4 z-10"
+                  onClick={() => toggleFullscreenChart('two-decade-1990')}
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </Button>
+              </CardHeader>
+              <CardContent className="p-2 sm:p-4">
+                <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[400px]' : 'h-[500px]'}`}>
+                  <Plot
+                    data={summaryData1990.data as any}
+                    layout={getChartLayout(summaryData1990.layout, isMobile ?? false) as any}
+                    config={getChartConfig(isMobile ?? false)}
+                    style={{ width: '100%', height: '100%' }}
+                    useResizeHandler={true}
+                    className="w-full h-full"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* 2010-2020 Plot */}
+            <Card className="w-full border-0">
+              <CardHeader className="relative p-4 pb-2">
+                <CardTitle className="font-serif text-center text-lg">2010-2020</CardTitle>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="absolute top-4 right-4 z-10"
+                  onClick={() => toggleFullscreenChart('two-decade-2010')}
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </Button>
+              </CardHeader>
+              <CardContent className="p-2 sm:p-4">
+                <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[400px]' : 'h-[500px]'}`}>
+                  <Plot
+                    data={summaryData2010.data as any}
+                    layout={getChartLayout(summaryData2010.layout, isMobile ?? false) as any}
+                    config={getChartConfig(isMobile ?? false)}
+                    style={{ width: '100%', height: '100%' }}
+                    useResizeHandler={true}
+                    className="w-full h-full"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Analysis */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Card className="border-2 border-primary bg-primary text-primary-foreground">
-              <CardHeader className="pb-2 p-3 sm:p-4">
+              <CardHeader className="pb-0 p-2 sm:p-3">
                 <CardTitle className="font-serif text-primary-foreground flex items-center gap-2 text-sm sm:text-base">
                   ⚠️ 1995-1996 Drought Impact
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 pt-0">
+              <CardContent className="p-2 sm:p-3 pt-0">
                 <p className="text-primary-foreground text-xs sm:text-sm">Despite high fertiliser inputs (130+ kg N/ha), yields dropped significantly due to water stress. This demonstrates the critical role of weather in nutrient uptake efficiency.</p>
               </CardContent>
             </Card>
 
             <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
-              <CardHeader className="pb-2 p-3 sm:p-4">
+              <CardHeader className="pb-0 p-2 sm:p-3">
                 <CardTitle className="font-serif text-secondary-foreground flex items-center gap-2 text-sm sm:text-base">
                   ⭐ 2010s Stability
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 pt-0">
+              <CardContent className="p-2 sm:p-3 pt-0">
                 <p className="text-secondary-foreground text-xs sm:text-sm">More consistent rainfall patterns and improved water management led to stable, high yields even with reduced fertiliser inputs, showing the benefits of precision agriculture.</p>
               </CardContent>
             </Card>
@@ -565,39 +575,72 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <Card className="border-0">
-                <CardHeader className="relative pb-2">
-                  <CardTitle className="font-serif">Fertiliser Usage Over Time</CardTitle>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="absolute top-2 right-2 z-10"
-                    onClick={() => toggleFullscreenChart('fertiliser-usage')}
-                  >
-                    <Maximize2 className="w-4 h-4" />
-                  </Button>
-                </CardHeader>
-                <CardContent className="p-2 sm:p-4">
-                  <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[400px]' : 'h-[500px]'}`}>
-                    <Plot
-                      data={fertiliserData90s.data as any}
-                      layout={getChartLayout(fertiliserData90s.layout, isMobile ?? false) as any}
-                      config={getChartConfig(isMobile ?? false)}
-                      style={{ width: '100%', height: '100%' }}
-                      useResizeHandler={true}
-                      className="w-full h-full"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="space-y-4">
+                <h3 className="font-serif text-xl font-semibold text-center">Fertiliser Usage Over Time</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                  {/* 1990-2000 Pie Chart */}
+                  <Card className="border-0">
+                    <CardHeader className="relative pb-2">
+                      <CardTitle className="font-serif text-center text-lg">1990-2000</CardTitle>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="absolute top-2 right-2 z-10"
+                        onClick={() => toggleFullscreenChart('fertiliser-usage-1990')}
+                      >
+                        <Maximize2 className="w-4 h-4" />
+                      </Button>
+                    </CardHeader>
+                    <CardContent className="p-2 sm:p-4">
+                      <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[300px]' : 'h-[400px]'}`}>
+                        <Plot
+                          data={fertiliserData90s.data as any}
+                          layout={getChartLayout(fertiliserData90s.layout, isMobile ?? false) as any}
+                          config={getChartConfig(isMobile ?? false)}
+                          style={{ width: '100%', height: '100%' }}
+                          useResizeHandler={true}
+                          className="w-full h-full"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* 2010-2020 Pie Chart */}
+                  <Card className="border-0">
+                    <CardHeader className="relative pb-2">
+                      <CardTitle className="font-serif text-center text-lg">2010-2020</CardTitle>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="absolute top-2 right-2 z-10"
+                        onClick={() => toggleFullscreenChart('fertiliser-usage-2010')}
+                      >
+                        <Maximize2 className="w-4 h-4" />
+                      </Button>
+                    </CardHeader>
+                    <CardContent className="p-2 sm:p-4">
+                      <div className={`w-full overflow-hidden ${isMobile === true ? 'h-[300px]' : 'h-[400px]'}`}>
+                        <Plot
+                          data={fertiliserData10s.data as any}
+                          layout={getChartLayout(fertiliserData10s.layout, isMobile ?? false) as any}
+                          config={getChartConfig(isMobile ?? false)}
+                          style={{ width: '100%', height: '100%' }}
+                          useResizeHandler={true}
+                          className="w-full h-full"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
 
               {/* Fertiliser insights below chart */}
               <div className="mt-4 sm:mt-6">
                 <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-secondary-foreground text-sm sm:text-base">Fertiliser Insights</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-secondary-foreground text-xs sm:text-sm">Fertiliser usage increased by 50% from 1990s to 2010s, indicating intensification of agricultural practices in UK winter barley production.</p>
                   </CardContent>
                 </Card>
@@ -643,10 +686,10 @@ export default function Home() {
               {/* Correlation insights below chart */}
               <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <Card className="border-2 border-primary bg-primary text-primary-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-primary-foreground text-sm sm:text-base">1990-2000 Patterns</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-primary-foreground text-xs sm:text-sm">
                       Strong positive correlations (0.29-0.38) between grain production and insect populations, indicating a more balanced ecosystem with higher biodiversity supporting agricultural productivity.
                     </p>
@@ -654,10 +697,10 @@ export default function Home() {
                 </Card>
 
                 <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-secondary-foreground text-sm sm:text-base">2010-2020 Shift</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-secondary-foreground text-xs sm:text-sm">
                       Negative correlations (-0.12 to -0.30) suggest intensified farming practices may have disrupted natural insect-crop relationships, highlighting the need for sustainable agriculture approaches.
                     </p>
@@ -705,10 +748,10 @@ export default function Home() {
               {/* Strip 8 insights below chart */}
               <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <Card className="border-2 border-primary bg-primary text-primary-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-primary-foreground text-sm sm:text-base">📈 Yield Improvements</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-primary-foreground text-xs sm:text-sm">
                       Grain yields remained stable around 6 tonnes/ha in the 1990s but became more consistent in the 2010s (5.7 tonnes/ha), while straw yields showed similar patterns with reduced variability in recent decades.
                     </p>
@@ -716,10 +759,10 @@ export default function Home() {
                 </Card>
 
                 <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-secondary-foreground text-sm sm:text-base">🌦️ Climate Patterns</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-secondary-foreground text-xs sm:text-sm">
                       Summer rainfall decreased significantly from ~200mm in the 1990s to ~175mm in the 2010s, while summer temperatures remained stable around 16.5°C, indicating adaptation to drier conditions.
                     </p>
@@ -789,10 +832,10 @@ export default function Home() {
               {/* Climate insights below chart */}
               <div className="mt-4 sm:mt-6">
                 <Card className="border-2 border-primary bg-primary text-primary-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-primary-foreground text-sm sm:text-base">Climate Impact</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-primary-foreground text-xs sm:text-sm">Weather variability has increased significantly, with rainfall and temperature patterns showing greater year-to-year variation affecting crop yields.</p>
                   </CardContent>
                 </Card>
@@ -838,19 +881,19 @@ export default function Home() {
               {/* Ecosystem insights below chart */}
               <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <Card className="border-2 border-accent bg-accent text-accent-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-accent-foreground text-sm sm:text-base">🐛 Population Peaks</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-accent-foreground text-xs sm:text-sm">English grain aphid (Sitobion avenae) showed dramatic population spikes in 1996 (&gt;12,000) and 2011 (~6,000), indicating climate-driven outbreak years with potential crop damage.</p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-2 border-secondary bg-secondary text-secondary-foreground">
-                  <CardHeader className="pb-2 p-3 sm:p-4">
+                  <CardHeader className="pb-0 p-2 sm:p-3">
                     <CardTitle className="font-serif text-secondary-foreground text-sm sm:text-base">📉 Recent Decline</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-3 sm:p-4 pt-0">
+                  <CardContent className="p-2 sm:p-3 pt-0">
                     <p className="text-secondary-foreground text-xs sm:text-sm">Overall aphid populations have declined significantly since 2014, with most recent years showing very low abundance across all species, potentially impacting natural pest control and pollination services.</p>
                   </CardContent>
                 </Card>
@@ -1345,11 +1388,19 @@ export default function Home() {
       {/* Fullscreen Chart Modal */}
       {fullscreenChart && (
         <div 
-          className="fixed inset-0 bg-background z-[9999] w-screen h-screen overflow-hidden"
-          style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}
+          className="fixed inset-0 bg-background z-[9999]"
+          style={{ 
+            width: '100vw', 
+            height: '100vh', 
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0
+          }}
           onClick={() => toggleFullscreenChart(fullscreenChart)}
         >
-          <div className="relative w-full h-full flex flex-col">
+          <div className="relative w-full h-full">
             <div className="absolute top-4 right-4 z-[10000] flex gap-2">
               <button
                 onClick={(e) => {
@@ -1364,52 +1415,108 @@ export default function Home() {
               </button>
             </div>
             <div 
-              className="flex-1 w-full h-full overflow-hidden"
-              style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}
+              className="w-full h-full p-4"
+              style={{ 
+                paddingTop: '60px' // Account for exit button
+              }}
               onClick={(e) => e.stopPropagation()}
             >
-              {fullscreenChart === 'two-decade' && (
+              {fullscreenChart === 'two-decade-1990' && (
                 <Plot
                   data={summaryData1990.data as any}
                   layout={{
                     ...summaryData1990.layout,
-                    margin: { t: 80, r: 60, b: 80, l: 80 },
+                    width: undefined,
+                    height: undefined,
+                    margin: { t: 60, r: 40, b: 60, l: 60 },
                     paper_bgcolor: 'rgba(0,0,0,0)',
                     plot_bgcolor: 'rgba(0,0,0,0)',
-                    font: { size: 16 },
+                    font: { size: 14 },
                     autosize: true
                   } as any}
                   config={{ 
                     responsive: true, 
                     displayModeBar: true,
                     doubleClick: 'reset',
-                    scrollZoom: true,
+                    scrollZoom: false,
                     displaylogo: false
                   }}
-                  style={{ width: '100%', height: '100%', maxWidth: '100vw' }}
+                  style={{ width: '100%', height: '100%' }}
                   useResizeHandler={true}
                 />
               )}
               
-              {fullscreenChart === 'fertiliser-usage' && (
+              {fullscreenChart === 'two-decade-2010' && (
                 <Plot
-                  data={fertiliserData90s.data as any}
+                  data={summaryData2010.data as any}
                   layout={{
-                    ...fertiliserData90s.layout,
-                    margin: { t: 80, r: 60, b: 80, l: 80 },
+                    ...summaryData2010.layout,
+                    width: undefined,
+                    height: undefined,
+                    margin: { t: 60, r: 40, b: 60, l: 60 },
                     paper_bgcolor: 'rgba(0,0,0,0)',
                     plot_bgcolor: 'rgba(0,0,0,0)',
-                    font: { size: 16 },
+                    font: { size: 14 },
                     autosize: true
                   } as any}
                   config={{ 
                     responsive: true, 
                     displayModeBar: true,
                     doubleClick: 'reset',
-                    scrollZoom: true,
+                    scrollZoom: false,
                     displaylogo: false
-                  } }
-                  style={{ width: '100%', height: '100%', maxWidth: '100vw' }}
+                  }}
+                  style={{ width: '100%', height: '100%' }}
+                  useResizeHandler={true}
+                />
+              )}
+              
+              {fullscreenChart === 'fertiliser-usage-1990' && (
+                <Plot
+                  data={fertiliserData90s.data as any}
+                  layout={{
+                    ...fertiliserData90s.layout,
+                    width: undefined,
+                    height: undefined,
+                    margin: { t: 60, r: 40, b: 60, l: 60 },
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: { size: 14 },
+                    autosize: true
+                  } as any}
+                  config={{ 
+                    responsive: true, 
+                    displayModeBar: true,
+                    doubleClick: 'reset',
+                    scrollZoom: false,
+                    displaylogo: false
+                  }}
+                  style={{ width: '100%', height: '100%' }}
+                  useResizeHandler={true}
+                />
+              )}
+              
+              {fullscreenChart === 'fertiliser-usage-2010' && (
+                <Plot
+                  data={fertiliserData10s.data as any}
+                  layout={{
+                    ...fertiliserData10s.layout,
+                    width: undefined,
+                    height: undefined,
+                    margin: { t: 60, r: 40, b: 60, l: 60 },
+                    paper_bgcolor: 'rgba(0,0,0,0)',
+                    plot_bgcolor: 'rgba(0,0,0,0)',
+                    font: { size: 14 },
+                    autosize: true
+                  } as any}
+                  config={{ 
+                    responsive: true, 
+                    displayModeBar: true,
+                    doubleClick: 'reset',
+                    scrollZoom: false,
+                    displaylogo: false
+                  }}
+                  style={{ width: '100%', height: '100%' }}
                   useResizeHandler={true}
                 />
               )}

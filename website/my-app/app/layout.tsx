@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Lora } from "next/font/google";
 import "./globals.css";
 import Navigation from "../components/Navigation";
@@ -21,7 +21,13 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: "NPK Impact Explorer",
   description: "Explore the impact of NPK fertilizers on agriculture across decades and regions.",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
